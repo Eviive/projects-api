@@ -27,4 +27,10 @@ public record CurrentUserDTO(
 
 ) {
 
+    public CurrentUserDTO {
+        if (username == null) {
+            username = "Guest";
+        }
+    }
+
 }
