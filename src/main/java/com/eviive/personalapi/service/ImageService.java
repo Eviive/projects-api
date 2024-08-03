@@ -4,8 +4,8 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.eviive.personalapi.config.exception.PersonalApiException;
 import com.eviive.personalapi.entity.Image;
-import com.eviive.personalapi.exception.PersonalApiException;
 import com.eviive.personalapi.properties.AzureStoragePropertiesConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,14 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_FILE_EMPTY;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_IMAGE_NO_NAME;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API415_FILE_NOT_IMAGE;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API500_UNKNOWN_CONTAINER;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API500_UPLOAD_ERROR;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_FILE_EMPTY;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_IMAGE_NO_NAME;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API415_FILE_NOT_IMAGE;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_UNKNOWN_CONTAINER;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_UPLOAD_ERROR;
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ImageService {
 
@@ -30,6 +30,7 @@ public class ImageService {
 
     private final AzureStoragePropertiesConfig azureStoragePropertiesConfig;
 
+    @Transactional(propagation = MANDATORY)
     public void upload(final Image image, final UUID oldUuid, final MultipartFile file) {
         if (file.isEmpty()) {
             throw new PersonalApiException(API400_FILE_EMPTY);
@@ -57,18 +58,12 @@ public class ImageService {
         }
 
         if (oldUuid != null) {
-            delete(image, oldUuid);
+            getBlobClient(image, oldUuid).deleteIfExists();
         }
     }
 
     public void delete(final Image image) {
         getBlobClient(image).deleteIfExists();
-
-        image.setUuid(null);
-    }
-
-    private void delete(final Image image, final UUID oldUuid) {
-        getBlobClient(image, oldUuid).deleteIfExists();
     }
 
     private BlobContainerClient getBlobContainerClient(final Image image) {

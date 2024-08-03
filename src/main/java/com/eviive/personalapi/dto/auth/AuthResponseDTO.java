@@ -1,5 +1,6 @@
-package com.eviive.personalapi.dto;
+package com.eviive.personalapi.dto.auth;
 
+import com.eviive.personalapi.dto.CurrentUserDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 

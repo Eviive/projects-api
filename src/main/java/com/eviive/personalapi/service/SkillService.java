@@ -1,9 +1,9 @@
 package com.eviive.personalapi.service;
 
+import com.eviive.personalapi.config.exception.PersonalApiException;
 import com.eviive.personalapi.dto.SkillDTO;
 import com.eviive.personalapi.dto.SortUpdateDTO;
 import com.eviive.personalapi.entity.Skill;
-import com.eviive.personalapi.exception.PersonalApiException;
 import com.eviive.personalapi.mapper.SkillMapper;
 import com.eviive.personalapi.repository.SkillRepository;
 import jakarta.annotation.Nullable;
@@ -17,11 +17,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_SKILL_ID_NOT_ALLOWED;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API404_SKILL_ID_NOT_FOUND;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_SKILL_ID_NOT_ALLOWED;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API404_SKILL_ID_NOT_FOUND;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class SkillService {
 
@@ -42,6 +41,7 @@ public class SkillService {
             .map(skillMapper::toDTO);
     }
 
+    @Transactional
     public SkillDTO create(final SkillDTO skillDTO, @Nullable final MultipartFile file) {
         if (skillDTO.id() != null) {
             throw new PersonalApiException(API400_SKILL_ID_NOT_ALLOWED);
@@ -59,6 +59,7 @@ public class SkillService {
         return save(skill, file);
     }
 
+    @Transactional
     public SkillDTO update(
         final Long id,
         final SkillDTO skillDTO,
@@ -75,8 +76,9 @@ public class SkillService {
         return save(skill, file);
     }
 
-    private SkillDTO save(final Skill skill, final MultipartFile file) {
+    private SkillDTO save(final Skill skill, @Nullable final MultipartFile file) {
         UUID oldUuid = null;
+
         if (file != null) {
             oldUuid = skill.getImage().getUuid();
             skill.getImage().setUuid(UUID.randomUUID());
@@ -91,21 +93,23 @@ public class SkillService {
         return skillMapper.toDTO(savedSkill);
     }
 
+    @Transactional
     public void delete(final Long id) {
         final Skill skill = skillRepository.findById(id)
             .orElseThrow(() -> PersonalApiException.format(API404_SKILL_ID_NOT_FOUND, id));
 
-        if (skill.getImage().getUuid() != null) {
-            imageService.delete(skill.getImage());
-        }
-
         skill.getProjects().forEach(project -> project.getSkills().remove(skill));
 
         skillRepository.deleteById(id);
+
+        if (skill.getImage().getUuid() != null) {
+            imageService.delete(skill.getImage());
+        }
     }
 
+    @Transactional
     public void sort(final List<SortUpdateDTO> sorts) {
-        for (SortUpdateDTO sort: sorts) {
+        for (SortUpdateDTO sort : sorts) {
             skillRepository.updateSortById(sort.id(), sort.sort());
         }
     }

@@ -40,7 +40,6 @@
         <module name="AvoidEscapedUnicodeCharacters"/>
         <module name="AvoidNestedBlocks"/>
         <module name="AvoidNoArgumentSuperConstructorCall"/>
-        <module name="AvoidStarImport"/>
         <module name="BooleanExpressionComplexity"/>
         <module name="CatchParameterName"/>
         <module name="ClassDataAbstractionCoupling"/>

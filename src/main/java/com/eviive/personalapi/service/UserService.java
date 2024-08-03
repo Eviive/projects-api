@@ -2,10 +2,10 @@ package com.eviive.personalapi.service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.eviive.personalapi.dto.AuthResponseDTO;
+import com.eviive.personalapi.config.exception.PersonalApiException;
 import com.eviive.personalapi.dto.CurrentUserDTO;
+import com.eviive.personalapi.dto.auth.AuthResponseDTO;
 import com.eviive.personalapi.entity.User;
-import com.eviive.personalapi.exception.PersonalApiException;
 import com.eviive.personalapi.mapper.UserMapper;
 import com.eviive.personalapi.repository.UserRepository;
 import com.eviive.personalapi.util.TokenUtilities;
@@ -25,14 +25,15 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_REFRESH_TOKEN_NOT_FOUND;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API401_LOGIN_FAILED;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API401_TOKEN_ERROR;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API404_USERNAME_NOT_FOUND;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_REFRESH_TOKEN_NOT_FOUND;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API401_LOGIN_FAILED;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API401_TOKEN_ERROR;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API404_USERNAME_NOT_FOUND;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -46,6 +47,7 @@ public class UserService implements UserDetailsService {
 
     private final UserMapper userMapper;
 
+    @Transactional(readOnly = true)
     public CurrentUserDTO getCurrentUser(final SecurityContext securityContext) {
         final Authentication authentication = securityContext.getAuthentication();
         final User user;
@@ -63,6 +65,7 @@ public class UserService implements UserDetailsService {
         return userMapper.toCurrentDTO(user, authentication.getAuthorities());
     }
 
+    @Transactional(readOnly = true)
     @SuppressWarnings("checkstyle:IllegalCatch")
     public AuthResponseDTO login(
         final String username,
@@ -105,6 +108,7 @@ public class UserService implements UserDetailsService {
         res.addCookie(tokenUtilities.deleteCookie());
     }
 
+    @Transactional(readOnly = true)
     public AuthResponseDTO refreshToken(final String refreshToken) {
         if (refreshToken == null) {
             throw new PersonalApiException(API400_REFRESH_TOKEN_NOT_FOUND);
@@ -135,6 +139,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
             .orElseThrow(() ->

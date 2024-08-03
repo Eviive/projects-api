@@ -1,10 +1,10 @@
 package com.eviive.personalapi.service;
 
-import com.eviive.personalapi.dto.RevalidateRequestDTO;
-import com.eviive.personalapi.dto.RevalidateResponseDTO;
-import com.eviive.personalapi.exception.PersonalApiException;
+import com.eviive.personalapi.config.exception.PersonalApiException;
+import com.eviive.personalapi.dto.web.RevalidateRequestDTO;
+import com.eviive.personalapi.dto.web.RevalidateResponseDTO;
 import com.eviive.personalapi.properties.PortfolioPropertiesConfig;
-import com.eviive.personalapi.service.webservice.PortfolioWebService;
+import com.eviive.personalapi.service.web.PortfolioWebService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -32,6 +32,7 @@ public class PortfolioService {
         final boolean isError = revalidateResponseEntity.getStatusCode().isError();
 
         final RevalidateResponseDTO revalidateResponseDTO = revalidateResponseEntity.getBody();
+
         final boolean isRevalidated = !isError &&
             revalidateResponseDTO != null &&
             Boolean.TRUE.equals(revalidateResponseDTO.revalidated());

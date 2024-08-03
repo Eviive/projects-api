@@ -5,25 +5,17 @@ import com.eviive.personalapi.dto.SortUpdateDTO;
 import com.eviive.personalapi.service.SkillService;
 import com.eviive.personalapi.util.UriUtilities;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
@@ -35,7 +27,8 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RestController
 @RequestMapping("skill")
 @RequiredArgsConstructor
-@Tag(name = "SkillController")
+// https://github.com/checkstyle/checkstyle/issues/10582
+@SuppressWarnings("checkstyle:Indentation")
 public class SkillController {
 
     private final SkillService skillService;
@@ -72,7 +65,11 @@ public class SkillController {
         summary = "Create a skill",
         responses = {
             @ApiResponse(responseCode = "201", description = "Created"),
-            @ApiResponse(responseCode = "400", description = "Bad Request")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<SkillDTO> save(@RequestBody @Valid final SkillDTO skillDTO) {
@@ -87,8 +84,16 @@ public class SkillController {
         summary = "Create a skill with an image",
         responses = {
             @ApiResponse(responseCode = "201", description = "Created"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "415", description = "Unsupported Media Type")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "415",
+                description = "Unsupported Media Type",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<SkillDTO> saveWithImage(
@@ -108,8 +113,16 @@ public class SkillController {
         summary = "Update a skill",
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<SkillDTO> update(
@@ -124,9 +137,21 @@ public class SkillController {
         summary = "Update a skill with an image",
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found"),
-            @ApiResponse(responseCode = "415", description = "Unsupported Media Type")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "415",
+                description = "Unsupported Media Type",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<SkillDTO> updateWithImage(
@@ -156,7 +181,11 @@ public class SkillController {
         summary = "Delete a skill",
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(
+                responseCode = "404",
+                description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<Void> delete(@PathVariable final Long id) {

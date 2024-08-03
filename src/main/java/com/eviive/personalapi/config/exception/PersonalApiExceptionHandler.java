@@ -1,4 +1,4 @@
-package com.eviive.personalapi.exception;
+package com.eviive.personalapi.config.exception;
 
 import com.eviive.personalapi.util.ErrorUtilities;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,12 +32,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_MISSING_SERVLET_REQUEST_PARAMETER;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_TYPE_MISMATCH;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API401_UNAUTHORIZED;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API403_FORBIDDEN;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API408_REQUEST_TIMEOUT;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_MISSING_SERVLET_REQUEST_PARAMETER;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_TYPE_MISMATCH;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API401_UNAUTHORIZED;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API403_FORBIDDEN;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API408_REQUEST_TIMEOUT;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -61,38 +61,40 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
         boolean defaultExceptionHandler = false;
         boolean logException = true;
 
-        if (e instanceof PersonalApiException personalApiException) {
-            errorResponse = errorUtilities.buildError(personalApiException);
-            logException = personalApiException.isLogException();
-
-        } else if (e instanceof JpaSystemException jpaSystemException) {
-            errorResponse = errorUtilities.buildError(
-                API500_INTERNAL_SERVER_ERROR,
-                jpaSystemException.getMostSpecificCause().getMessage()
-            );
-
-        } else if (e instanceof TransactionSystemException transactionSystemException) {
-            errorResponse = errorUtilities.buildError(
-                API500_INTERNAL_SERVER_ERROR,
-                transactionSystemException.getMostSpecificCause().getMessage()
-            );
-
-        } else if (e instanceof NestedRuntimeException nestedRuntimeException) {
-            errorResponse = errorUtilities.buildError(
-                API500_INTERNAL_SERVER_ERROR,
-                nestedRuntimeException.getMostSpecificCause().getMessage()
-            );
-
-        } else if (e instanceof ClientAbortException clientAbortException) {
-            errorResponse = errorUtilities.buildError(
-                API408_REQUEST_TIMEOUT,
-                clientAbortException.getLocalizedMessage()
-            );
-            logException = false;
-
-        } else {
-            errorResponse = errorUtilities.buildError(API500_INTERNAL_SERVER_ERROR, e.getMessage());
-            defaultExceptionHandler = true;
+        switch (e) {
+            case PersonalApiException personalApiException:
+                errorResponse = errorUtilities.buildError(personalApiException);
+                logException = personalApiException.isLogException();
+                break;
+            case JpaSystemException jpaSystemException:
+                errorResponse = errorUtilities.buildError(
+                    API500_INTERNAL_SERVER_ERROR,
+                    jpaSystemException.getMostSpecificCause().getMessage()
+                );
+                break;
+            case TransactionSystemException transactionSystemException:
+                errorResponse = errorUtilities.buildError(
+                    API500_INTERNAL_SERVER_ERROR,
+                    transactionSystemException.getMostSpecificCause().getMessage()
+                );
+                break;
+            case NestedRuntimeException nestedRuntimeException:
+                errorResponse = errorUtilities.buildError(
+                    API500_INTERNAL_SERVER_ERROR,
+                    nestedRuntimeException.getMostSpecificCause().getMessage()
+                );
+                break;
+            case ClientAbortException clientAbortException:
+                errorResponse = errorUtilities.buildError(
+                    API408_REQUEST_TIMEOUT,
+                    clientAbortException.getLocalizedMessage()
+                );
+                logException = false;
+                break;
+            default:
+                errorResponse = errorUtilities.buildError(API500_INTERNAL_SERVER_ERROR, e.getMessage());
+                defaultExceptionHandler = true;
+                break;
         }
 
         if (logException) {

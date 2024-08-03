@@ -1,7 +1,7 @@
 package com.eviive.personalapi.config;
 
+import com.eviive.personalapi.config.exception.PersonalApiExceptionHandler;
 import com.eviive.personalapi.entity.Role;
-import com.eviive.personalapi.exception.PersonalApiExceptionHandler;
 import com.eviive.personalapi.filter.AuthorizationFilter;
 import com.eviive.personalapi.properties.CorsPropertiesConfig;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +16,15 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.eviive.personalapi.entity.Role.ANONYMOUS;
-import static com.eviive.personalapi.entity.Scope.CREATE_PROJECT;
-import static com.eviive.personalapi.entity.Scope.CREATE_SKILL;
-import static com.eviive.personalapi.entity.Scope.DELETE_PROJECT;
-import static com.eviive.personalapi.entity.Scope.DELETE_SKILL;
-import static com.eviive.personalapi.entity.Scope.READ_ACTUATOR;
-import static com.eviive.personalapi.entity.Scope.READ_PROJECT;
-import static com.eviive.personalapi.entity.Scope.READ_SKILL;
-import static com.eviive.personalapi.entity.Scope.REVALIDATE_PORTFOLIO;
-import static com.eviive.personalapi.entity.Scope.UPDATE_PROJECT;
-import static com.eviive.personalapi.entity.Scope.UPDATE_SKILL;
+import static com.eviive.personalapi.entity.Scope.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.ORIGIN;
@@ -132,34 +121,27 @@ public class SecurityConfig {
 
     @Bean
     public RoleHierarchy roleHierarchy() {
-        final RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
         final Role[] roles = Role.values();
-        final StringBuilder roleHierarchyBuilder = new StringBuilder();
 
-        Arrays
-            .stream(roles)
-            .filter(r -> r.getSubRoles() != null)
-            .forEach(r -> {
-                final String roleName = r.toString();
+        final RoleHierarchyImpl.Builder builder = RoleHierarchyImpl
+            .withDefaultRolePrefix();
 
-                for (Role subRole: r.getSubRoles()) {
-                    roleHierarchyBuilder
-                        .append(roleName)
-                        .append(" > ")
-                        .append(subRole.toString())
-                        .append("\n");
-                }
-            });
+        for (Role r : roles) {
+            final RoleHierarchyImpl.Builder.ImpliedRoles roleBuilder =
+                builder.role(r.name());
 
-        roleHierarchy.setHierarchy(roleHierarchyBuilder.toString());
-        return roleHierarchy;
-    }
+            if (r.getImplies() != null) {
+                roleBuilder.implies(
+                    r
+                        .getImplies()
+                        .stream()
+                        .map(Role::name)
+                        .toArray(String[]::new)
+                );
+            }
+        }
 
-    @Bean
-    public DefaultWebSecurityExpressionHandler customWebSecurityExpressionHandler(final RoleHierarchy roleHierarchy) {
-        final DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-        expressionHandler.setRoleHierarchy(roleHierarchy);
-        return expressionHandler;
+        return builder.build();
     }
 
     @Bean

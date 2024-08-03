@@ -11,12 +11,18 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
+
 @Repository
+@Transactional(propagation = MANDATORY)
 public interface ProjectRepository extends JpaRepository<Project, Long> {
+
+    // Find
 
     @NotNull
     @EntityGraph(value = "project-image")
@@ -38,6 +44,8 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @NotNull
     @Query("select max(p.sort) from Project p")
     Optional<Integer> findMaxSort();
+
+    // Update
 
     @Modifying
     @Query("update Project p set p.sort = :sort where p.id = :id")

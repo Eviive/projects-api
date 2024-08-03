@@ -1,8 +1,8 @@
 plugins {
     id "java"
-    id "org.springframework.boot" version "3.2.5"
-    id "io.spring.dependency-management" version "1.1.4"
-    id "org.flywaydb.flyway" version "9.22.3"
+    id "org.springframework.boot" version "3.3.2"
+    id "io.spring.dependency-management" version "1.1.6"
+    id "org.flywaydb.flyway" version "10.10.0"
     id "checkstyle"
 }
 
@@ -10,7 +10,7 @@ group = "com.eviive.personalapi"
 version = "1.4.0"
 
 java {
-    sourceCompatibility = "17"
+    sourceCompatibility = "21"
 }
 
 flyway {
@@ -35,8 +35,8 @@ repositories {
 ext {
     set("jwtVersion", "4.4.0")
     set("mapStructVersion", "1.5.5.Final")
-    set("swaggerVersion", "2.5.0")
-    set("springCloudAzureVersion", "5.11.0")
+    set("swaggerVersion", "2.6.0")
+    set("springCloudAzureVersion", "5.14.0")
 }
 
 dependencies {
@@ -69,6 +69,7 @@ dependencies {
 
     // Flyway
     implementation "org.flywaydb:flyway-core"
+    implementation "org.flywaydb:flyway-database-postgresql"
 
     // MapStruct
     implementation "org.mapstruct:mapstruct:${mapStructVersion}"
@@ -95,5 +96,5 @@ processResources {
 }
 
 checkstyle {
-    toolVersion "10.15.0"
+    toolVersion "10.17.0"
 }

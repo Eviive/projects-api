@@ -8,8 +8,6 @@ import org.mapstruct.Mapping;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.mapstruct.InjectionStrategy.CONSTRUCTOR;
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
@@ -25,17 +23,12 @@ public interface UserMapper {
     // to Current DTO
 
     @Mapping(target = "id", source = "user.id")
-    @Mapping(target = "username", expression = "java( user != null ? user.getUsername() : \"Guest\" )")
+    @Mapping(target = "username", source = "user.username")
     @Mapping(target = "authorities", source = "authorities")
-    CurrentUserDTO toCurrentDTO(@Nullable User user, Set<String> authorities);
+    CurrentUserDTO toCurrentDTO(@Nullable User user, Collection<? extends GrantedAuthority> authorities);
 
-    default CurrentUserDTO toCurrentDTO(@Nullable User user, Collection<? extends GrantedAuthority> authorities) {
-        return toCurrentDTO(
-            user,
-            authorities.stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toSet())
-        );
+    default String mapAuthority(GrantedAuthority authority) {
+        return authority.getAuthority();
     }
 
 }
