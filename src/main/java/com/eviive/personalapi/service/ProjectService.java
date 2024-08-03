@@ -22,7 +22,6 @@ import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API4
 import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API404_PROJECT_ID_NOT_FOUND;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ProjectService {
 
@@ -32,28 +31,25 @@ public class ProjectService {
 
     private final ImageService imageService;
 
-    @Transactional(readOnly = true)
     public Page<ProjectDTO> findAll(final Pageable pageable, final String search) {
         return projectRepository.findAll(pageable, search)
             .map(projectMapper::toDTO);
     }
 
-    @Transactional(readOnly = true)
     public List<ProjectLightDTO> findAllLight() {
         return projectRepository.findAllLight();
     }
 
-    @Transactional(readOnly = true)
     public List<ProjectDTO> findAllFeatured() {
         return projectMapper.toListDTO(projectRepository.findAllByFeaturedIsTrue());
     }
 
-    @Transactional(readOnly = true)
     public Page<ProjectDTO> findAllNotFeatured(final Pageable pageable) {
         return projectRepository.findAllByFeaturedIsFalse(pageable)
             .map(projectMapper::toDTO);
     }
 
+    @Transactional
     public ProjectDTO create(final ProjectDTO projectDTO, @Nullable final MultipartFile file) {
         if (projectDTO.id() != null) {
             throw new PersonalApiException(API400_PROJECT_ID_NOT_ALLOWED);
@@ -71,6 +67,7 @@ public class ProjectService {
         return save(project, file);
     }
 
+    @Transactional
     public ProjectDTO update(final Long id, final ProjectDTO projectDTO, @Nullable final MultipartFile file) {
         if (!projectRepository.existsById(id)) {
             throw PersonalApiException.format(API404_PROJECT_ID_NOT_FOUND, id);
@@ -85,6 +82,7 @@ public class ProjectService {
 
     private ProjectDTO save(final Project project, final @Nullable MultipartFile file) {
         UUID oldUuid = null;
+
         if (file != null) {
             oldUuid = project.getImage().getUuid();
             project.getImage().setUuid(UUID.randomUUID());
@@ -99,17 +97,19 @@ public class ProjectService {
         return projectMapper.toDTO(savedProject);
     }
 
+    @Transactional
     public void delete(final Long id) {
         final Project project = projectRepository.findById(id)
             .orElseThrow(() -> PersonalApiException.format(API404_PROJECT_ID_NOT_FOUND, id));
 
+        projectRepository.deleteById(id);
+
         if (project.getImage().getUuid() != null) {
             imageService.delete(project.getImage());
         }
-
-        projectRepository.deleteById(id);
     }
 
+    @Transactional
     public void sort(final List<SortUpdateDTO> sorts) {
         for (SortUpdateDTO sort : sorts) {
             projectRepository.updateSortById(sort.id(), sort.sort());

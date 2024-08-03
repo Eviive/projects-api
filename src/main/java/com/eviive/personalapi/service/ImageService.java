@@ -22,7 +22,6 @@ import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API5
 import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_UPLOAD_ERROR;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class ImageService {
 
@@ -30,6 +29,7 @@ public class ImageService {
 
     private final AzureStoragePropertiesConfig azureStoragePropertiesConfig;
 
+    @Transactional
     public void upload(final Image image, final UUID oldUuid, final MultipartFile file) {
         if (file.isEmpty()) {
             throw new PersonalApiException(API400_FILE_EMPTY);
@@ -57,18 +57,12 @@ public class ImageService {
         }
 
         if (oldUuid != null) {
-            delete(image, oldUuid);
+            getBlobClient(image, oldUuid).deleteIfExists();
         }
     }
 
     public void delete(final Image image) {
         getBlobClient(image).deleteIfExists();
-
-        image.setUuid(null);
-    }
-
-    private void delete(final Image image, final UUID oldUuid) {
-        getBlobClient(image, oldUuid).deleteIfExists();
     }
 
     private BlobContainerClient getBlobContainerClient(final Image image) {
