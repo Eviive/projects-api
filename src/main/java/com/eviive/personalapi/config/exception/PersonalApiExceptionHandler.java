@@ -61,38 +61,40 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
         boolean defaultExceptionHandler = false;
         boolean logException = true;
 
-        if (e instanceof PersonalApiException personalApiException) {
-            errorResponse = errorUtilities.buildError(personalApiException);
-            logException = personalApiException.isLogException();
-
-        } else if (e instanceof JpaSystemException jpaSystemException) {
-            errorResponse = errorUtilities.buildError(
-                API500_INTERNAL_SERVER_ERROR,
-                jpaSystemException.getMostSpecificCause().getMessage()
-            );
-
-        } else if (e instanceof TransactionSystemException transactionSystemException) {
-            errorResponse = errorUtilities.buildError(
-                API500_INTERNAL_SERVER_ERROR,
-                transactionSystemException.getMostSpecificCause().getMessage()
-            );
-
-        } else if (e instanceof NestedRuntimeException nestedRuntimeException) {
-            errorResponse = errorUtilities.buildError(
-                API500_INTERNAL_SERVER_ERROR,
-                nestedRuntimeException.getMostSpecificCause().getMessage()
-            );
-
-        } else if (e instanceof ClientAbortException clientAbortException) {
-            errorResponse = errorUtilities.buildError(
-                API408_REQUEST_TIMEOUT,
-                clientAbortException.getLocalizedMessage()
-            );
-            logException = false;
-
-        } else {
-            errorResponse = errorUtilities.buildError(API500_INTERNAL_SERVER_ERROR, e.getMessage());
-            defaultExceptionHandler = true;
+        switch (e) {
+            case PersonalApiException personalApiException:
+                errorResponse = errorUtilities.buildError(personalApiException);
+                logException = personalApiException.isLogException();
+                break;
+            case JpaSystemException jpaSystemException:
+                errorResponse = errorUtilities.buildError(
+                    API500_INTERNAL_SERVER_ERROR,
+                    jpaSystemException.getMostSpecificCause().getMessage()
+                );
+                break;
+            case TransactionSystemException transactionSystemException:
+                errorResponse = errorUtilities.buildError(
+                    API500_INTERNAL_SERVER_ERROR,
+                    transactionSystemException.getMostSpecificCause().getMessage()
+                );
+                break;
+            case NestedRuntimeException nestedRuntimeException:
+                errorResponse = errorUtilities.buildError(
+                    API500_INTERNAL_SERVER_ERROR,
+                    nestedRuntimeException.getMostSpecificCause().getMessage()
+                );
+                break;
+            case ClientAbortException clientAbortException:
+                errorResponse = errorUtilities.buildError(
+                    API408_REQUEST_TIMEOUT,
+                    clientAbortException.getLocalizedMessage()
+                );
+                logException = false;
+                break;
+            default:
+                errorResponse = errorUtilities.buildError(API500_INTERNAL_SERVER_ERROR, e.getMessage());
+                defaultExceptionHandler = true;
+                break;
         }
 
         if (logException) {
