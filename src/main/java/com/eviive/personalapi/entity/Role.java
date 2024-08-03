@@ -10,16 +10,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static com.eviive.personalapi.entity.Scope.CREATE_PROJECT;
-import static com.eviive.personalapi.entity.Scope.CREATE_SKILL;
-import static com.eviive.personalapi.entity.Scope.DELETE_PROJECT;
-import static com.eviive.personalapi.entity.Scope.DELETE_SKILL;
-import static com.eviive.personalapi.entity.Scope.READ_ACTUATOR;
-import static com.eviive.personalapi.entity.Scope.READ_PROJECT;
-import static com.eviive.personalapi.entity.Scope.READ_SKILL;
-import static com.eviive.personalapi.entity.Scope.REVALIDATE_PORTFOLIO;
-import static com.eviive.personalapi.entity.Scope.UPDATE_PROJECT;
-import static com.eviive.personalapi.entity.Scope.UPDATE_SKILL;
+import static com.eviive.personalapi.entity.Scope.*;
 
 @RequiredArgsConstructor
 public enum Role {
@@ -47,7 +38,7 @@ public enum Role {
 
     @Nullable
     @Getter
-    private final Set<Role> subRoles;
+    private final Set<Role> implies;
 
     public List<GrantedAuthority> getAuthorities() {
         final Stream<GrantedAuthority> grantedAuthorities = Stream
@@ -58,14 +49,14 @@ public enum Role {
             .map(SimpleGrantedAuthority::new)
             .map(GrantedAuthority.class::cast);
 
-        if (subRoles == null) {
+        if (implies == null) {
             return grantedAuthorities.toList();
         }
 
         return Stream
             .concat(
                 grantedAuthorities,
-                subRoles.stream().flatMap(sR -> sR.getAuthorities().stream())
+                implies.stream().flatMap(iR -> iR.getAuthorities().stream())
             )
             .toList();
     }

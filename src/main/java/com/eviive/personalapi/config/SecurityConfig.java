@@ -16,13 +16,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static com.eviive.personalapi.entity.Role.ANONYMOUS;
@@ -123,34 +121,27 @@ public class SecurityConfig {
 
     @Bean
     public RoleHierarchy roleHierarchy() {
-        final RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
         final Role[] roles = Role.values();
-        final StringBuilder roleHierarchyBuilder = new StringBuilder();
 
-        Arrays
-            .stream(roles)
-            .filter(r -> r.getSubRoles() != null)
-            .forEach(r -> {
-                final String roleName = r.toString();
+        final RoleHierarchyImpl.Builder builder = RoleHierarchyImpl
+            .withDefaultRolePrefix();
 
-                for (Role subRole: r.getSubRoles()) {
-                    roleHierarchyBuilder
-                        .append(roleName)
-                        .append(" > ")
-                        .append(subRole.toString())
-                        .append("\n");
-                }
-            });
+        for (Role r : roles) {
+            final RoleHierarchyImpl.Builder.ImpliedRoles roleBuilder =
+                builder.role(r.name());
 
-        roleHierarchy.setHierarchy(roleHierarchyBuilder.toString());
-        return roleHierarchy;
-    }
+            if (r.getImplies() != null) {
+                roleBuilder.implies(
+                    r
+                        .getImplies()
+                        .stream()
+                        .map(Role::name)
+                        .toArray(String[]::new)
+                );
+            }
+        }
 
-    @Bean
-    public DefaultWebSecurityExpressionHandler customWebSecurityExpressionHandler(final RoleHierarchy roleHierarchy) {
-        final DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-        expressionHandler.setRoleHierarchy(roleHierarchy);
-        return expressionHandler;
+        return builder.build();
     }
 
     @Bean
