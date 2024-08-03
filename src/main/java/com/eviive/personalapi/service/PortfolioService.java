@@ -1,8 +1,8 @@
 package com.eviive.personalapi.service;
 
-import com.eviive.personalapi.dto.RevalidateRequestDTO;
-import com.eviive.personalapi.dto.RevalidateResponseDTO;
-import com.eviive.personalapi.exception.PersonalApiException;
+import com.eviive.personalapi.config.exception.PersonalApiException;
+import com.eviive.personalapi.dto.web.RevalidateRequestDTO;
+import com.eviive.personalapi.dto.web.RevalidateResponseDTO;
 import com.eviive.personalapi.properties.PortfolioPropertiesConfig;
 import com.eviive.personalapi.service.web.PortfolioWebService;
 import lombok.RequiredArgsConstructor;

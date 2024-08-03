@@ -2,10 +2,10 @@ package com.eviive.personalapi.service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.eviive.personalapi.dto.AuthResponseDTO;
+import com.eviive.personalapi.config.exception.PersonalApiException;
 import com.eviive.personalapi.dto.CurrentUserDTO;
+import com.eviive.personalapi.dto.auth.AuthResponseDTO;
 import com.eviive.personalapi.entity.User;
-import com.eviive.personalapi.exception.PersonalApiException;
 import com.eviive.personalapi.mapper.UserMapper;
 import com.eviive.personalapi.repository.UserRepository;
 import com.eviive.personalapi.util.TokenUtilities;
@@ -28,11 +28,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_REFRESH_TOKEN_NOT_FOUND;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API401_LOGIN_FAILED;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API401_TOKEN_ERROR;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API404_USERNAME_NOT_FOUND;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_REFRESH_TOKEN_NOT_FOUND;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API401_LOGIN_FAILED;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API401_TOKEN_ERROR;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API404_USERNAME_NOT_FOUND;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor

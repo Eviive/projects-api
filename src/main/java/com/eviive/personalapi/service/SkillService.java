@@ -1,9 +1,9 @@
 package com.eviive.personalapi.service;
 
+import com.eviive.personalapi.config.exception.PersonalApiException;
 import com.eviive.personalapi.dto.SkillDTO;
 import com.eviive.personalapi.dto.SortUpdateDTO;
 import com.eviive.personalapi.entity.Skill;
-import com.eviive.personalapi.exception.PersonalApiException;
 import com.eviive.personalapi.mapper.SkillMapper;
 import com.eviive.personalapi.repository.SkillRepository;
 import jakarta.annotation.Nullable;
@@ -17,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_SKILL_ID_NOT_ALLOWED;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API404_SKILL_ID_NOT_FOUND;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_SKILL_ID_NOT_ALLOWED;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API404_SKILL_ID_NOT_FOUND;
 
 @Service
 @Transactional

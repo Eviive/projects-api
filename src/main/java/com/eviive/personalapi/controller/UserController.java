@@ -1,8 +1,8 @@
 package com.eviive.personalapi.controller;
 
-import com.eviive.personalapi.dto.AuthRequestDTO;
-import com.eviive.personalapi.dto.AuthResponseDTO;
 import com.eviive.personalapi.dto.CurrentUserDTO;
+import com.eviive.personalapi.dto.auth.AuthRequestDTO;
+import com.eviive.personalapi.dto.auth.AuthResponseDTO;
 import com.eviive.personalapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

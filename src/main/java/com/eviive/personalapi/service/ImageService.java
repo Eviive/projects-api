@@ -4,8 +4,8 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.eviive.personalapi.config.exception.PersonalApiException;
 import com.eviive.personalapi.entity.Image;
-import com.eviive.personalapi.exception.PersonalApiException;
 import com.eviive.personalapi.properties.AzureStoragePropertiesConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,11 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.UUID;
 
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_FILE_EMPTY;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API400_IMAGE_NO_NAME;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API415_FILE_NOT_IMAGE;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API500_UNKNOWN_CONTAINER;
-import static com.eviive.personalapi.exception.PersonalApiErrorsEnum.API500_UPLOAD_ERROR;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_FILE_EMPTY;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_IMAGE_NO_NAME;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API415_FILE_NOT_IMAGE;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_UNKNOWN_CONTAINER;
+import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_UPLOAD_ERROR;
 
 @Service
 @Transactional
