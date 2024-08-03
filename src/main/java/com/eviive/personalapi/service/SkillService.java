@@ -105,7 +105,7 @@ public class SkillService {
     }
 
     public void sort(final List<SortUpdateDTO> sorts) {
-        for (SortUpdateDTO sort: sorts) {
+        for (SortUpdateDTO sort : sorts) {
             skillRepository.updateSortById(sort.id(), sort.sort());
         }
     }

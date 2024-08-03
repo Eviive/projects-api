@@ -111,7 +111,7 @@ public class ProjectService {
     }
 
     public void sort(final List<SortUpdateDTO> sorts) {
-        for (SortUpdateDTO sort: sorts) {
+        for (SortUpdateDTO sort : sorts) {
             projectRepository.updateSortById(sort.id(), sort.sort());
         }
     }
