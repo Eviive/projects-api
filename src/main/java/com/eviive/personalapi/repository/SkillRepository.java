@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
+
 @Repository
-@Transactional(readOnly = true)
+@Transactional(propagation = MANDATORY)
 public interface SkillRepository extends JpaRepository<Skill, Long> {
 
     // Find
@@ -36,7 +38,6 @@ public interface SkillRepository extends JpaRepository<Skill, Long> {
 
     // Update
 
-    @Transactional
     @Modifying
     @Query("update Skill s set s.sort = :sort where s.id = :id")
     void updateSortById(@NotNull Long id, @NotNull Integer sort);

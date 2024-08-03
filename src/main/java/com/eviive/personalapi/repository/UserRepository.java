@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
+
 @Repository
-@Transactional(readOnly = true)
+@Transactional(propagation = MANDATORY)
 public interface UserRepository extends JpaRepository<User, Long> {
 
     // Find

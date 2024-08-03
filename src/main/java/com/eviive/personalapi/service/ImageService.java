@@ -20,6 +20,7 @@ import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API4
 import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API415_FILE_NOT_IMAGE;
 import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_UNKNOWN_CONTAINER;
 import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_UPLOAD_ERROR;
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +30,7 @@ public class ImageService {
 
     private final AzureStoragePropertiesConfig azureStoragePropertiesConfig;
 
-    @Transactional
+    @Transactional(propagation = MANDATORY)
     public void upload(final Image image, final UUID oldUuid, final MultipartFile file) {
         if (file.isEmpty()) {
             throw new PersonalApiException(API400_FILE_EMPTY);

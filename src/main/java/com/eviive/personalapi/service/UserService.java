@@ -25,6 +25,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
@@ -46,6 +47,7 @@ public class UserService implements UserDetailsService {
 
     private final UserMapper userMapper;
 
+    @Transactional(readOnly = true)
     public CurrentUserDTO getCurrentUser(final SecurityContext securityContext) {
         final Authentication authentication = securityContext.getAuthentication();
         final User user;
@@ -63,6 +65,7 @@ public class UserService implements UserDetailsService {
         return userMapper.toCurrentDTO(user, authentication.getAuthorities());
     }
 
+    @Transactional(readOnly = true)
     @SuppressWarnings("checkstyle:IllegalCatch")
     public AuthResponseDTO login(
         final String username,
@@ -105,6 +108,7 @@ public class UserService implements UserDetailsService {
         res.addCookie(tokenUtilities.deleteCookie());
     }
 
+    @Transactional(readOnly = true)
     public AuthResponseDTO refreshToken(final String refreshToken) {
         if (refreshToken == null) {
             throw new PersonalApiException(API400_REFRESH_TOKEN_NOT_FOUND);
@@ -135,6 +139,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
             .orElseThrow(() ->

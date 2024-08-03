@@ -31,19 +31,23 @@ public class ProjectService {
 
     private final ImageService imageService;
 
+    @Transactional(readOnly = true)
     public Page<ProjectDTO> findAll(final Pageable pageable, final String search) {
         return projectRepository.findAll(pageable, search)
             .map(projectMapper::toDTO);
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectLightDTO> findAllLight() {
         return projectRepository.findAllLight();
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectDTO> findAllFeatured() {
         return projectMapper.toListDTO(projectRepository.findAllByFeaturedIsTrue());
     }
 
+    @Transactional(readOnly = true)
     public Page<ProjectDTO> findAllNotFeatured(final Pageable pageable) {
         return projectRepository.findAllByFeaturedIsFalse(pageable)
             .map(projectMapper::toDTO);

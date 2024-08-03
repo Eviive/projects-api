@@ -30,10 +30,12 @@ public class SkillService {
 
     private final ImageService imageService;
 
+    @Transactional(readOnly = true)
     public List<SkillDTO> findAll() {
         return skillMapper.toListDTO(skillRepository.findAll());
     }
 
+    @Transactional(readOnly = true)
     public Slice<SkillDTO> findAll(final Pageable pageable, final String search) {
         return skillRepository.findAll(pageable, search)
             .map(skillMapper::toDTO);

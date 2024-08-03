@@ -16,8 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static org.springframework.transaction.annotation.Propagation.MANDATORY;
+
 @Repository
-@Transactional(readOnly = true)
+@Transactional(propagation = MANDATORY)
 public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     // Find
@@ -45,7 +47,6 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     // Update
 
-    @Transactional
     @Modifying
     @Query("update Project p set p.sort = :sort where p.id = :id")
     void updateSortById(@NotNull Long id, @NotNull Integer sort);
