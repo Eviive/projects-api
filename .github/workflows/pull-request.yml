@@ -10,6 +10,6 @@ jobs:
       - name: Checkstyle
         uses: eviive/actions/validate/lint/checkstyle@main
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
           checkstyle_config: config/checkstyle/checkstyle.xml
           checkstyle_version: 10.17.0
