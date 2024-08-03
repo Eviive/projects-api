@@ -6,12 +6,15 @@ import com.eviive.personalapi.dto.CurrentUserDTO;
 import com.eviive.personalapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.CurrentSecurityContext;
 import org.springframework.security.core.context.SecurityContext;
@@ -40,7 +43,11 @@ public class UserController {
         summary = "Current user",
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(
+                responseCode = "404",
+                description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<CurrentUserDTO> current(
@@ -60,8 +67,16 @@ public class UserController {
         summary = "Login",
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<AuthResponseDTO> login(
@@ -94,9 +109,21 @@ public class UserController {
         summary = "Refresh token",
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "401",
+                description = "Unauthorized",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<AuthResponseDTO> refreshToken(

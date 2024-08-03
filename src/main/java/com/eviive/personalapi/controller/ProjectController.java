@@ -6,12 +6,15 @@ import com.eviive.personalapi.dto.SortUpdateDTO;
 import com.eviive.personalapi.service.ProjectService;
 import com.eviive.personalapi.util.UriUtilities;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -79,7 +82,11 @@ public class ProjectController {
         summary = "Create a project",
         responses = {
             @ApiResponse(responseCode = "201", description = "Created"),
-            @ApiResponse(responseCode = "400", description = "Bad Request")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<ProjectDTO> save(@RequestBody @Valid final ProjectDTO projectDTO) {
@@ -94,8 +101,16 @@ public class ProjectController {
         summary = "Create a project with an image",
         responses = {
             @ApiResponse(responseCode = "201", description = "Created"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "415", description = "Unsupported Media Type")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "415",
+                description = "Unsupported Media Type",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<ProjectDTO> saveWithImage(
@@ -115,8 +130,16 @@ public class ProjectController {
         summary = "Update a project",
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "404", description = "Not Found")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Not Found",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<ProjectDTO> update(
@@ -131,8 +154,16 @@ public class ProjectController {
         summary = "Update a project with an image",
         responses = {
             @ApiResponse(responseCode = "200", description = "OK"),
-            @ApiResponse(responseCode = "400", description = "Bad Request"),
-            @ApiResponse(responseCode = "415", description = "Unsupported Media Type")
+            @ApiResponse(
+                responseCode = "400",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            ),
+            @ApiResponse(
+                responseCode = "415",
+                description = "Unsupported Media Type",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<ProjectDTO> updateWithImage(
@@ -148,10 +179,7 @@ public class ProjectController {
     @PatchMapping(path = "sort", consumes = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Sort projects",
-        responses = {
-            @ApiResponse(responseCode = "204", description = "No Content"),
-            @ApiResponse(responseCode = "400", description = "Bad Request")
-        }
+        responses = @ApiResponse(responseCode = "204", description = "No Content")
     )
     public ResponseEntity<Void> sort(@RequestBody final List<SortUpdateDTO> sorts) {
         projectService.sort(sorts);
@@ -165,7 +193,11 @@ public class ProjectController {
         summary = "Delete a project",
         responses = {
             @ApiResponse(responseCode = "204", description = "No Content"),
-            @ApiResponse(responseCode = "400", description = "Bad Request")
+            @ApiResponse(
+                responseCode = "404",
+                description = "Bad Request",
+                content = @Content(schema = @Schema(implementation = ProblemDetail.class))
+            )
         }
     )
     public ResponseEntity<Void> delete(@PathVariable final Long id) {

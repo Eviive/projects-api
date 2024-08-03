@@ -1,4 +1,4 @@
-package com.eviive.personalapi.service.webservice;
+package com.eviive.personalapi.service.web;
 
 import com.eviive.personalapi.dto.RevalidateRequestDTO;
 import com.eviive.personalapi.dto.RevalidateResponseDTO;

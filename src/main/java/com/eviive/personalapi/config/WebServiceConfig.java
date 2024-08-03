@@ -1,7 +1,7 @@
 package com.eviive.personalapi.config;
 
 import com.eviive.personalapi.properties.PortfolioPropertiesConfig;
-import com.eviive.personalapi.service.webservice.PortfolioWebService;
+import com.eviive.personalapi.service.web.PortfolioWebService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
