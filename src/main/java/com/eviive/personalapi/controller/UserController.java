@@ -5,6 +5,7 @@ import com.eviive.personalapi.dto.AuthResponseDTO;
 import com.eviive.personalapi.dto.CurrentUserDTO;
 import com.eviive.personalapi.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +43,9 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found")
         }
     )
-    public ResponseEntity<CurrentUserDTO> current(@CurrentSecurityContext final SecurityContext securityContext) {
+    public ResponseEntity<CurrentUserDTO> current(
+        @Parameter(hidden = true) @CurrentSecurityContext final SecurityContext securityContext
+    ) {
         return ResponseEntity.ok(userService.getCurrentUser(securityContext));
     }
 
