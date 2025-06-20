@@ -9,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,9 +35,9 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-        @NonNull final HttpServletRequest req,
-        @NonNull final HttpServletResponse res,
-        @NonNull final FilterChain filterChain
+        @NotNull final HttpServletRequest req,
+        @NotNull final HttpServletResponse res,
+        @NotNull final FilterChain filterChain
     )
         throws ServletException, IOException {
         final String authorizationHeader = req.getHeader(AUTHORIZATION);

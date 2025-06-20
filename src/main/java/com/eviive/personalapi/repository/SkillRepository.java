@@ -1,8 +1,8 @@
 package com.eviive.personalapi.repository;
 
 import com.eviive.personalapi.entity.Skill;
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.NotNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.EntityGraph;

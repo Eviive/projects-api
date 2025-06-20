@@ -2,8 +2,8 @@ package com.eviive.personalapi.repository;
 
 import com.eviive.personalapi.dto.ProjectLightDTO;
 import com.eviive.personalapi.entity.Project;
-import jakarta.annotation.Nullable;
-import jakarta.validation.constraints.NotNull;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;

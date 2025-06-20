@@ -2,7 +2,7 @@ package com.eviive.personalapi.mapper;
 
 import com.eviive.personalapi.dto.CurrentUserDTO;
 import com.eviive.personalapi.entity.User;
-import jakarta.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.security.core.GrantedAuthority;

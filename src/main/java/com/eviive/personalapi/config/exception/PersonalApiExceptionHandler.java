@@ -4,9 +4,9 @@ import com.eviive.personalapi.util.ErrorUtilities;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.connector.ClientAbortException;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.core.NestedRuntimeException;
@@ -14,7 +14,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.NonNull;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
@@ -141,13 +140,13 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
 
     @Override
     protected ResponseEntity<Object> handleHandlerMethodValidationException(
-        @NonNull final HandlerMethodValidationException ex,
-        @NonNull final HttpHeaders headers,
-        @NonNull final HttpStatusCode status,
-        @NonNull final WebRequest request
+        @NotNull final HandlerMethodValidationException ex,
+        @NotNull final HttpHeaders headers,
+        @NotNull final HttpStatusCode status,
+        @NotNull final WebRequest request
     ) {
         return handleBadRequestException(
-            ex.getAllValidationResults()
+            ex.getParameterValidationResults()
                 .stream()
                 .flatMap(r ->
                     r.getResolvableErrors()
