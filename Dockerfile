@@ -6,9 +6,10 @@ COPY gradlew *.gradle ./
 COPY gradle gradle
 COPY src src
 
-RUN ./gradlew bootJar
-
-RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
+RUN ./gradlew bootJar && \
+    mkdir -p build/dependency && \
+    cd build/dependency && \
+    jar -xf ../libs/*.jar
 
 FROM eclipse-temurin:17-jdk-alpine
 
@@ -20,4 +21,4 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib     ./lib
 COPY --from=build ${DEPENDENCY}/META-INF         ./META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes ./
 
-CMD java -Dspring.profiles.active=prod -cp .:lib/* com.eviive.personalapi.PersonalApiApplication
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-cp", ".:lib/*", "com.eviive.personalapi.PersonalApiApplication"]
