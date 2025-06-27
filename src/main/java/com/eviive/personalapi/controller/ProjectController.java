@@ -3,6 +3,7 @@ package com.eviive.personalapi.controller;
 import com.eviive.personalapi.dto.ProjectDTO;
 import com.eviive.personalapi.dto.ProjectLightDTO;
 import com.eviive.personalapi.dto.SortUpdateDTO;
+import com.eviive.personalapi.dto.pagination.PageDTO;
 import com.eviive.personalapi.service.ProjectService;
 import com.eviive.personalapi.util.UriUtilities;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ProblemDetail;
@@ -53,11 +53,15 @@ public class ProjectController {
         summary = "Find a page of projects",
         responses = @ApiResponse(responseCode = "200", description = "OK")
     )
-    public ResponseEntity<Page<ProjectDTO>> findAll(
+    public ResponseEntity<PageDTO<ProjectDTO>> findAll(
         @SortDefault("sort") final Pageable pageable,
         @RequestParam(required = false) final String search
     ) {
-        return ResponseEntity.ok(projectService.findAll(pageable, search));
+        return ResponseEntity.ok(
+            PageDTO.of(
+                projectService.findAll(pageable, search)
+            )
+        );
     }
 
     @GetMapping(path = "light", produces = APPLICATION_JSON_VALUE)
@@ -83,8 +87,12 @@ public class ProjectController {
         summary = "Find a page of not featured projects",
         responses = @ApiResponse(responseCode = "200", description = "OK")
     )
-    public ResponseEntity<Page<ProjectDTO>> findAllNotFeatured(@SortDefault("sort") final Pageable pageable) {
-        return ResponseEntity.ok(projectService.findAllNotFeatured(pageable));
+    public ResponseEntity<PageDTO<ProjectDTO>> findAllNotFeatured(@SortDefault("sort") final Pageable pageable) {
+        return ResponseEntity.ok(
+            PageDTO.of(
+                projectService.findAllNotFeatured(pageable)
+            )
+        );
     }
 
     // POST
