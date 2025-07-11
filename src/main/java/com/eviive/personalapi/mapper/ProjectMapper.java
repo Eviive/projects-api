@@ -1,5 +1,6 @@
 package com.eviive.personalapi.mapper;
 
+import com.eviive.personalapi.core.config.MapStructConfig;
 import com.eviive.personalapi.dto.ProjectDTO;
 import com.eviive.personalapi.dto.ProjectLightDTO;
 import com.eviive.personalapi.entity.Project;
@@ -12,14 +13,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import static org.mapstruct.InjectionStrategy.CONSTRUCTOR;
-import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
-import static org.mapstruct.ReportingPolicy.ERROR;
-
 @Mapper(
-    unmappedTargetPolicy = ERROR,
-    componentModel = SPRING,
-    injectionStrategy = CONSTRUCTOR,
+    config = MapStructConfig.class,
     uses = {SkillMapper.class, ImageMapper.class}
 )
 public interface ProjectMapper extends CollectionsMapper<Project, ProjectDTO> {

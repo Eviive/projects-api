@@ -7,7 +7,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Component;
 
 @Component
-public final class ErrorUtilities {
+public final class ErrorUtils {
 
     public ProblemDetail buildError(final HttpStatus httpStatus, final String detail) {
         return ProblemDetail.forStatusAndDetail(

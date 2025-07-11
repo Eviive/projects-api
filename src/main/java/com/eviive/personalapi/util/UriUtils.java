@@ -6,7 +6,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @Component
-public final class UriUtilities {
+public final class UriUtils {
 
     public URI getCurrentUri() {
         return ServletUriComponentsBuilder

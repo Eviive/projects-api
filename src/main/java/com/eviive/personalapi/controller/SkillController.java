@@ -4,7 +4,7 @@ import com.eviive.personalapi.dto.SkillDTO;
 import com.eviive.personalapi.dto.SortUpdateDTO;
 import com.eviive.personalapi.dto.pagination.SliceDTO;
 import com.eviive.personalapi.service.SkillService;
-import com.eviive.personalapi.util.UriUtilities;
+import com.eviive.personalapi.util.UriUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -43,7 +43,7 @@ public class SkillController {
 
     private final SkillService skillService;
 
-    private final UriUtilities uriUtilities;
+    private final UriUtils uriUtils;
 
     // GET
 
@@ -88,8 +88,9 @@ public class SkillController {
     )
     public ResponseEntity<SkillDTO> save(@RequestBody @Valid final SkillDTO skillDTO) {
         final SkillDTO createdSkill = skillService.create(skillDTO, null);
-        final URI location = uriUtilities.buildLocation(createdSkill.id());
-        return ResponseEntity.created(location)
+        final URI location = uriUtils.buildLocation(createdSkill.id());
+        return ResponseEntity
+            .created(location)
             .body(createdSkill);
     }
 
@@ -115,8 +116,9 @@ public class SkillController {
         @RequestPart("file") final MultipartFile file
     ) {
         final SkillDTO createdSkill = skillService.create(skillDTO, file);
-        final URI location = uriUtilities.buildLocation(createdSkill.id(), "with-image");
-        return ResponseEntity.created(location)
+        final URI location = uriUtils.buildLocation(createdSkill.id(), "with-image");
+        return ResponseEntity
+            .created(location)
             .body(createdSkill);
     }
 

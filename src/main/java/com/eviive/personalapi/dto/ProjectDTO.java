@@ -47,8 +47,7 @@ public record ProjectDTO(
     ImageDTO image,
 
     @NotNull(message = "The project's skills are required.")
-    @Valid
-    Set<SkillDTO> skills
+    Set<@Valid SkillDTO> skills
 
 ) {
 

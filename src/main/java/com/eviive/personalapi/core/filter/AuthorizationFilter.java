@@ -3,7 +3,7 @@ package com.eviive.personalapi.core.filter;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.Claim;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.eviive.personalapi.util.TokenUtilities;
+import com.eviive.personalapi.util.TokenUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,7 +21,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-import static com.eviive.personalapi.util.TokenUtilities.AUTHORITIES_CLAIM;
+import static com.eviive.personalapi.util.TokenUtils.AUTHORITIES_CLAIM;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Component
@@ -30,7 +30,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
     private static final String BEARER_PREFIX = "Bearer ";
 
-    private final TokenUtilities tokenUtilities;
+    private final TokenUtils tokenUtils;
 
     @Override
     protected void doFilterInternal(
@@ -53,7 +53,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
 
             final String token = authorizationHeader.substring(BEARER_PREFIX.length());
 
-            final DecodedJWT decodedToken = tokenUtilities.verifyToken(token);
+            final DecodedJWT decodedToken = tokenUtils.verifyToken(token);
 
             final String username = decodedToken.getSubject();
 

@@ -60,10 +60,14 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
 
-            .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
+            .sessionManagement(session ->
+                session.sessionCreationPolicy(STATELESS)
+            )
 
             .addFilterBefore(authorizationFilter, UsernamePasswordAuthenticationFilter.class)
-            .anonymous(anonymous -> anonymous.authorities(ANONYMOUS.getAuthorities()))
+            .anonymous(anonymous ->
+                anonymous.authorities(ANONYMOUS.getAuthorities())
+            )
 
             .authorizeHttpRequests(auth ->
                 auth.requestMatchers(
@@ -80,44 +84,28 @@ public class SecurityConfig {
                     )
                     .permitAll()
 
-                    .requestMatchers(GET, "/user/current")
-                    .permitAll()
-                    .requestMatchers(POST, "/user/login", "/user/logout", "/user/refresh")
-                    .permitAll()
+                    .requestMatchers(GET, "/user/current").permitAll()
+                    .requestMatchers(POST, "/user/login", "/user/logout", "/user/refresh").permitAll()
 
-                    .requestMatchers(GET, "/project/**")
-                    .hasAuthority(READ_PROJECT.getName())
-                    .requestMatchers(POST, "/project/**")
-                    .hasAuthority(CREATE_PROJECT.getName())
-                    .requestMatchers(PUT, "/project/**")
-                    .hasAuthority(UPDATE_PROJECT.getName())
-                    .requestMatchers(PATCH, "/project/**")
-                    .hasAuthority(UPDATE_PROJECT.getName())
-                    .requestMatchers(DELETE, "/project/**")
-                    .hasAuthority(DELETE_PROJECT.getName())
+                    .requestMatchers(GET, "/project/**").hasAuthority(READ_PROJECT.getName())
+                    .requestMatchers(POST, "/project/**").hasAuthority(CREATE_PROJECT.getName())
+                    .requestMatchers(PUT, "/project/**").hasAuthority(UPDATE_PROJECT.getName())
+                    .requestMatchers(PATCH, "/project/**").hasAuthority(UPDATE_PROJECT.getName())
+                    .requestMatchers(DELETE, "/project/**").hasAuthority(DELETE_PROJECT.getName())
 
-                    .requestMatchers(GET, "/skill/**")
-                    .hasAuthority(READ_SKILL.getName())
-                    .requestMatchers(POST, "/skill/**")
-                    .hasAuthority(CREATE_SKILL.getName())
-                    .requestMatchers(PUT, "/skill/**")
-                    .hasAuthority(UPDATE_SKILL.getName())
-                    .requestMatchers(PATCH, "/skill/**")
-                    .hasAuthority(UPDATE_SKILL.getName())
-                    .requestMatchers(DELETE, "/skill/**")
-                    .hasAuthority(DELETE_SKILL.getName())
+                    .requestMatchers(GET, "/skill/**").hasAuthority(READ_SKILL.getName())
+                    .requestMatchers(POST, "/skill/**").hasAuthority(CREATE_SKILL.getName())
+                    .requestMatchers(PUT, "/skill/**").hasAuthority(UPDATE_SKILL.getName())
+                    .requestMatchers(PATCH, "/skill/**").hasAuthority(UPDATE_SKILL.getName())
+                    .requestMatchers(DELETE, "/skill/**").hasAuthority(DELETE_SKILL.getName())
 
-                    .requestMatchers(POST, "/portfolio/revalidate")
-                    .hasAuthority(REVALIDATE_PORTFOLIO.getName())
+                    .requestMatchers(POST, "/portfolio/revalidate").hasAuthority(REVALIDATE_PORTFOLIO.getName())
 
-                    .requestMatchers(GET, "/actuator/info", "/actuator/health")
-                    .permitAll()
-                    .requestMatchers(GET, "/actuator/**")
-                    .hasAuthority(READ_ACTUATOR.getName())
+                    .requestMatchers(GET, "/actuator/info", "/actuator/health").permitAll()
+                    .requestMatchers(GET, "/actuator/**").hasAuthority(READ_ACTUATOR.getName())
 
                     // deny-by-default policy
-                    .anyRequest()
-                    .denyAll()
+                    .anyRequest().denyAll()
             )
 
             .exceptionHandling(exceptionHandling ->
@@ -132,8 +120,7 @@ public class SecurityConfig {
     public RoleHierarchy roleHierarchy() {
         final Role[] roles = Role.values();
 
-        final RoleHierarchyImpl.Builder builder = RoleHierarchyImpl
-            .withDefaultRolePrefix();
+        final RoleHierarchyImpl.Builder builder = RoleHierarchyImpl.withDefaultRolePrefix();
 
         for (Role r : roles) {
             final RoleHierarchyImpl.Builder.ImpliedRoles roleBuilder =

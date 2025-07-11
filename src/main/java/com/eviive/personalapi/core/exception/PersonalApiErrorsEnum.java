@@ -8,7 +8,6 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.REQUEST_TIMEOUT;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 
@@ -42,10 +41,6 @@ public enum PersonalApiErrorsEnum {
     API404_USERNAME_NOT_FOUND("The user with username %s was not found.", NOT_FOUND),
     API404_PROJECT_ID_NOT_FOUND("Project with id %d was not found.", NOT_FOUND),
     API404_SKILL_ID_NOT_FOUND("Skill with id %d was not found.", NOT_FOUND),
-
-    // 408 Request Timeout
-
-    API408_REQUEST_TIMEOUT("The request timed out: %s.", REQUEST_TIMEOUT),
 
     // 415 Unsupported Media Type
 

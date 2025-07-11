@@ -15,30 +15,28 @@ import java.util.Collection;
 import java.util.List;
 
 @Component
-public final class TokenUtilities {
+public final class TokenUtils {
 
     public static final String REFRESH_TOKEN_COOKIE = "personal-api_refresh-token";
 
     public static final String AUTHORITIES_CLAIM = "authorities";
 
     private final Algorithm algorithm;
-
     private final JWTVerifier verifier;
 
-    private final UriUtilities uriUtilities;
+    private final UriUtils uriUtils;
 
     private final PersonalApiPropertiesConfig personalApiPropertiesConfig;
-
     private final JwtPropertiesConfig jwtPropertiesConfig;
 
-    public TokenUtilities(
-        final UriUtilities uriUtilities,
+    public TokenUtils(
+        final UriUtils uriUtils,
         final PersonalApiPropertiesConfig personalApiPropertiesConfig,
         final JwtPropertiesConfig jwtPropertiesConfig
     ) {
         this.algorithm = Algorithm.HMAC256(jwtPropertiesConfig.secret());
         this.verifier = JWT.require(algorithm).build();
-        this.uriUtilities = uriUtilities;
+        this.uriUtils = uriUtils;
         this.personalApiPropertiesConfig = personalApiPropertiesConfig;
         this.jwtPropertiesConfig = jwtPropertiesConfig;
     }
@@ -59,7 +57,7 @@ public final class TokenUtilities {
                     .now()
                     .plusSeconds(jwtPropertiesConfig.token().access().expiration())
             )
-            .withIssuer(uriUtilities.getCurrentUri().toString())
+            .withIssuer(uriUtils.getCurrentUri().toString())
             .withClaim(AUTHORITIES_CLAIM, authoritiesClaimContent)
             .sign(algorithm);
     }
@@ -73,7 +71,7 @@ public final class TokenUtilities {
                     .now()
                     .plusSeconds(jwtPropertiesConfig.token().refresh().expiration())
             )
-            .withIssuer(uriUtilities.getCurrentUri().toString())
+            .withIssuer(uriUtils.getCurrentUri().toString())
             .sign(algorithm);
 
         return createCookie(refreshToken, jwtPropertiesConfig.token().refresh().expiration());

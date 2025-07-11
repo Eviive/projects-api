@@ -1,5 +1,6 @@
 package com.eviive.personalapi.mapper;
 
+import com.eviive.personalapi.core.config.MapStructConfig;
 import com.eviive.personalapi.dto.SkillDTO;
 import com.eviive.personalapi.entity.Skill;
 import com.eviive.personalapi.mapper.util.CollectionsMapper;
@@ -8,14 +9,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-import static org.mapstruct.InjectionStrategy.CONSTRUCTOR;
-import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
-import static org.mapstruct.ReportingPolicy.ERROR;
-
 @Mapper(
-    unmappedTargetPolicy = ERROR,
-    componentModel = SPRING,
-    injectionStrategy = CONSTRUCTOR,
+    config = MapStructConfig.class,
     uses = ImageMapper.class
 )
 public interface SkillMapper extends CollectionsMapper<Skill, SkillDTO> {

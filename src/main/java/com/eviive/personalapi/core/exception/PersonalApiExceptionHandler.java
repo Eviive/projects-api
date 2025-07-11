@@ -1,25 +1,21 @@
 package com.eviive.personalapi.core.exception;
 
-import com.eviive.personalapi.util.ErrorUtilities;
+import com.eviive.personalapi.util.ErrorUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.ClientAbortException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.core.NestedRuntimeException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
-import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,7 +31,6 @@ import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API400
 import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API400_TYPE_MISMATCH;
 import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API401_UNAUTHORIZED;
 import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API403_FORBIDDEN;
-import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API408_REQUEST_TIMEOUT;
 import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -47,7 +42,7 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
 
     private static final String NEW_LINE = "\n";
 
-    private final ErrorUtilities errorUtilities;
+    private final ErrorUtils errorUtils;
 
     private final ObjectMapper objectMapper;
 
@@ -60,40 +55,12 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
         boolean defaultExceptionHandler = false;
         boolean logException = true;
 
-        switch (e) {
-            case PersonalApiException personalApiException:
-                errorResponse = errorUtilities.buildError(personalApiException);
-                logException = personalApiException.isLogException();
-                break;
-            case JpaSystemException jpaSystemException:
-                errorResponse = errorUtilities.buildError(
-                    API500_INTERNAL_SERVER_ERROR,
-                    jpaSystemException.getMostSpecificCause().getMessage()
-                );
-                break;
-            case TransactionSystemException transactionSystemException:
-                errorResponse = errorUtilities.buildError(
-                    API500_INTERNAL_SERVER_ERROR,
-                    transactionSystemException.getMostSpecificCause().getMessage()
-                );
-                break;
-            case NestedRuntimeException nestedRuntimeException:
-                errorResponse = errorUtilities.buildError(
-                    API500_INTERNAL_SERVER_ERROR,
-                    nestedRuntimeException.getMostSpecificCause().getMessage()
-                );
-                break;
-            case ClientAbortException clientAbortException:
-                errorResponse = errorUtilities.buildError(
-                    API408_REQUEST_TIMEOUT,
-                    clientAbortException.getLocalizedMessage()
-                );
-                logException = false;
-                break;
-            default:
-                errorResponse = errorUtilities.buildError(API500_INTERNAL_SERVER_ERROR, e.getMessage());
-                defaultExceptionHandler = true;
-                break;
+        if (e instanceof PersonalApiException personalApiException) {
+            errorResponse = errorUtils.buildError(personalApiException);
+            logException = personalApiException.isLogException();
+        } else {
+            errorResponse = errorUtils.buildError(API500_INTERNAL_SERVER_ERROR, e.getMessage());
+            defaultExceptionHandler = true;
         }
 
         if (logException) {
@@ -109,7 +76,8 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
             }
         }
 
-        return ResponseEntity.status(errorResponse.getStatus())
+        return ResponseEntity
+            .status(errorResponse.getStatus())
             .body(errorResponse);
     }
 
@@ -117,9 +85,8 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
         final Exception e,
         final boolean defaultExceptionHandler
     ) {
-        return (defaultExceptionHandler ? "DefaultExceptionHandler (%s)" : "%sHandler").formatted(
-            e.getClass().getSimpleName()
-        );
+        return (defaultExceptionHandler ? "DefaultExceptionHandler (%s)" : "%sHandler")
+            .formatted(e.getClass().getSimpleName());
     }
 
     @Override
@@ -203,8 +170,9 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     private ResponseEntity<Object> handleBadRequestException(final String detail) {
-        return ResponseEntity.badRequest()
-            .body(errorUtilities.buildError(BAD_REQUEST, detail));
+        return ResponseEntity
+            .badRequest()
+            .body(errorUtils.buildError(BAD_REQUEST, detail));
     }
 
     private ResponseEntity<Object> handleBadRequestException(
@@ -215,7 +183,7 @@ public class PersonalApiExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     private void sendError(final HttpServletResponse res, final PersonalApiErrorsEnum personalApiErrorsEnum) {
-        final ProblemDetail errorResponse = errorUtilities.buildError(personalApiErrorsEnum);
+        final ProblemDetail errorResponse = errorUtils.buildError(personalApiErrorsEnum);
 
         res.setStatus(errorResponse.getStatus());
         res.setContentType(APPLICATION_JSON_VALUE);

@@ -8,7 +8,7 @@ import com.eviive.personalapi.dto.auth.AuthResponseDTO;
 import com.eviive.personalapi.entity.User;
 import com.eviive.personalapi.mapper.UserMapper;
 import com.eviive.personalapi.repository.UserRepository;
-import com.eviive.personalapi.util.TokenUtilities;
+import com.eviive.personalapi.util.TokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -41,11 +41,11 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    private final TokenUtilities tokenUtilities;
+    private final UserMapper userMapper;
+
+    private final TokenUtils tokenUtils;
 
     private final AuthenticationConfiguration authenticationConfiguration;
-
-    private final UserMapper userMapper;
 
     @Transactional(readOnly = true)
     public CurrentUserDTO getCurrentUser(final SecurityContext securityContext) {
@@ -87,14 +87,14 @@ public class UserService implements UserDetailsService {
 
             final Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
-            final String accessToken = tokenUtilities.generateAccessToken(
+            final String accessToken = tokenUtils.generateAccessToken(
                 user.getUsername(),
                 authorities
             );
 
             final CurrentUserDTO currentUser = userMapper.toCurrentDTO(user, authorities);
 
-            res.addCookie(tokenUtilities.generateRefreshTokenCookie(user.getUsername()));
+            res.addCookie(tokenUtils.generateRefreshTokenCookie(user.getUsername()));
 
             return new AuthResponseDTO(currentUser, accessToken);
         } catch (AuthenticationException e) {
@@ -105,7 +105,7 @@ public class UserService implements UserDetailsService {
     }
 
     public void logout(final HttpServletResponse res) {
-        res.addCookie(tokenUtilities.deleteCookie());
+        res.addCookie(tokenUtils.deleteCookie());
     }
 
     @Transactional(readOnly = true)
@@ -115,7 +115,7 @@ public class UserService implements UserDetailsService {
         }
 
         try {
-            final DecodedJWT decodedToken = tokenUtilities.verifyToken(refreshToken);
+            final DecodedJWT decodedToken = tokenUtils.verifyToken(refreshToken);
 
             final User user = userRepository.findByUsername(decodedToken.getSubject())
                 .orElseThrow(() -> PersonalApiException.format(
@@ -125,7 +125,7 @@ public class UserService implements UserDetailsService {
 
             final Collection<? extends GrantedAuthority> authorities = user.getAuthorities();
 
-            final String accessToken = tokenUtilities.generateAccessToken(
+            final String accessToken = tokenUtils.generateAccessToken(
                 user.getUsername(),
                 authorities
             );

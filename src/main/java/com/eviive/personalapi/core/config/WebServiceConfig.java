@@ -2,7 +2,7 @@ package com.eviive.personalapi.core.config;
 
 import com.eviive.personalapi.core.properties.PortfolioPropertiesConfig;
 import com.eviive.personalapi.service.web.PortfolioWebService;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,17 +14,16 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Configuration
-@Slf4j
 public class WebServiceConfig {
 
-    private WebClient buildWebClient(final String baseUrl) {
+    private <E> WebClient buildWebClient(final String baseUrl, final Class<E> webServiceInterface) {
         return WebClient
             .builder()
             .baseUrl(baseUrl)
             .defaultHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
             .defaultHeader(ACCEPT, APPLICATION_JSON_VALUE)
             .filter((req, next) -> {
-                log.info("{} {}", req.method(), req.url());
+                LoggerFactory.getLogger(webServiceInterface).info("{} {}", req.method(), req.url());
                 return next.exchange(req);
             })
             .build();
@@ -39,9 +38,10 @@ public class WebServiceConfig {
 
     @Bean
     public PortfolioWebService portfolioWebService(final PortfolioPropertiesConfig portfolioPropertiesConfig) {
+        Class<PortfolioWebService> clazz = PortfolioWebService.class;
         return buildWebService(
-            buildWebClient(portfolioPropertiesConfig.api().url()),
-            PortfolioWebService.class
+            buildWebClient(portfolioPropertiesConfig.api().url(), clazz),
+            clazz
         );
     }
 

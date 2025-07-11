@@ -24,11 +24,11 @@ import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API404
 @RequiredArgsConstructor
 public class SkillService {
 
+    private final ImageService imageService;
+
     private final SkillRepository skillRepository;
 
     private final SkillMapper skillMapper;
-
-    private final ImageService imageService;
 
     @Transactional(readOnly = true)
     public List<SkillDTO> findAll() {

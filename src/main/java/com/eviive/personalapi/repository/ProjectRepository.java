@@ -26,11 +26,24 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @NotNull
     @EntityGraph(value = "project-image")
-    @Query("select p from Project p where :#{#search} is null or lower(p.title) like lower('%' || :#{#search} || '%')")
+    @Query("""
+        select p
+        from Project p
+        where :#{#search} is null
+            or lower(p.title) like lower('%' || :#{#search} || '%')
+    """)
     Page<Project> findAll(@NotNull Pageable pageable, @Nullable String search);
 
     @NotNull
-    @Query("select new com.eviive.personalapi.dto.ProjectLightDTO(p.id, p.title, p.featured, p.sort) from Project p")
+    @Query("""
+        select new com.eviive.personalapi.dto.ProjectLightDTO(
+            p.id,
+            p.title,
+            p.featured,
+            p.sort
+        )
+        from Project p
+    """)
     List<ProjectLightDTO> findAllLight();
 
     @NotNull
@@ -42,13 +55,20 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     Page<Project> findAllByFeaturedIsFalse(Pageable pageable);
 
     @NotNull
-    @Query("select max(p.sort) from Project p")
+    @Query("""
+        select max(p.sort)
+        from Project p
+    """)
     Optional<Integer> findMaxSort();
 
     // Update
 
     @Modifying
-    @Query("update Project p set p.sort = :sort where p.id = :id")
+    @Query("""
+        update Project p
+        set p.sort = :sort
+        where p.id = :id
+    """)
     void updateSortById(@NotNull Long id, @NotNull Integer sort);
 
 }

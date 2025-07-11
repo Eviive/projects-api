@@ -25,11 +25,11 @@ import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API404
 @RequiredArgsConstructor
 public class ProjectService {
 
+    private final ImageService imageService;
+
     private final ProjectRepository projectRepository;
 
     private final ProjectMapper projectMapper;
-
-    private final ImageService imageService;
 
     @Transactional(readOnly = true)
     public Page<ProjectDTO> findAll(final Pageable pageable, final String search) {

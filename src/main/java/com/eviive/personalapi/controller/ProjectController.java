@@ -5,7 +5,7 @@ import com.eviive.personalapi.dto.ProjectLightDTO;
 import com.eviive.personalapi.dto.SortUpdateDTO;
 import com.eviive.personalapi.dto.pagination.PageDTO;
 import com.eviive.personalapi.service.ProjectService;
-import com.eviive.personalapi.util.UriUtilities;
+import com.eviive.personalapi.util.UriUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -44,7 +44,7 @@ public class ProjectController {
 
     private final ProjectService projectService;
 
-    private final UriUtilities uriUtilities;
+    private final UriUtils uriUtils;
 
     // GET
 
@@ -111,8 +111,9 @@ public class ProjectController {
     )
     public ResponseEntity<ProjectDTO> save(@RequestBody @Valid final ProjectDTO projectDTO) {
         final ProjectDTO createdProject = projectService.create(projectDTO, null);
-        final URI location = uriUtilities.buildLocation(createdProject.id());
-        return ResponseEntity.created(location)
+        final URI location = uriUtils.buildLocation(createdProject.id());
+        return ResponseEntity
+            .created(location)
             .body(createdProject);
     }
 
@@ -138,8 +139,9 @@ public class ProjectController {
         @RequestPart("file") final MultipartFile file
     ) {
         final ProjectDTO createdProject = projectService.create(projectDTO, file);
-        final URI location = uriUtilities.buildLocation(createdProject.id(), "with-image");
-        return ResponseEntity.created(location)
+        final URI location = uriUtils.buildLocation(createdProject.id(), "with-image");
+        return ResponseEntity
+            .created(location)
             .body(createdProject);
     }
 
@@ -188,7 +190,7 @@ public class ProjectController {
     )
     public ResponseEntity<ProjectDTO> updateWithImage(
         @PathVariable final Long id,
-        @RequestPart("project") final @Valid ProjectDTO projectDTO,
+        @RequestPart("project") @Valid final ProjectDTO projectDTO,
         @RequestPart("file") final MultipartFile file
     ) {
         return ResponseEntity.ok(projectService.update(id, projectDTO, file));

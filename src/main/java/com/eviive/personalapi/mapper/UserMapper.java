@@ -1,5 +1,6 @@
 package com.eviive.personalapi.mapper;
 
+import com.eviive.personalapi.core.config.MapStructConfig;
 import com.eviive.personalapi.dto.CurrentUserDTO;
 import com.eviive.personalapi.entity.User;
 import org.jetbrains.annotations.Nullable;
@@ -9,15 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-import static org.mapstruct.InjectionStrategy.CONSTRUCTOR;
-import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
-import static org.mapstruct.ReportingPolicy.ERROR;
-
-@Mapper(
-    unmappedTargetPolicy = ERROR,
-    componentModel = SPRING,
-    injectionStrategy = CONSTRUCTOR
-)
+@Mapper(config = MapStructConfig.class)
 public interface UserMapper {
 
     // to Current DTO
