@@ -1,4 +1,4 @@
-FROM eclipse-temurin:17-jdk-alpine AS build
+FROM eclipse-temurin:21-jdk-alpine AS build
 
 WORKDIR /workspace/app
 
@@ -11,7 +11,7 @@ RUN ./gradlew bootJar && \
     cd build/dependency && \
     jar -xf ../libs/*.jar
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM eclipse-temurin:21-jdk-alpine
 
 WORKDIR /app
 
