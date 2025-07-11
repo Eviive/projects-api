@@ -1,4 +1,4 @@
-package com.eviive.personalapi.config.exception;
+package com.eviive.personalapi.core.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

@@ -1,8 +1,8 @@
-package com.eviive.personalapi.config;
+package com.eviive.personalapi.core.config;
 
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.eviive.personalapi.properties.AzureStoragePropertiesConfig;
+import com.eviive.personalapi.core.properties.AzureStoragePropertiesConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

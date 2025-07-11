@@ -1,9 +1,9 @@
-package com.eviive.personalapi.config;
+package com.eviive.personalapi.core.config;
 
-import com.eviive.personalapi.config.exception.PersonalApiExceptionHandler;
+import com.eviive.personalapi.core.exception.PersonalApiExceptionHandler;
+import com.eviive.personalapi.core.filter.AuthorizationFilter;
+import com.eviive.personalapi.core.properties.CorsPropertiesConfig;
 import com.eviive.personalapi.entity.Role;
-import com.eviive.personalapi.filter.AuthorizationFilter;
-import com.eviive.personalapi.properties.CorsPropertiesConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,16 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 import static com.eviive.personalapi.entity.Role.ANONYMOUS;
-import static com.eviive.personalapi.entity.Scope.*;
+import static com.eviive.personalapi.entity.Scope.CREATE_PROJECT;
+import static com.eviive.personalapi.entity.Scope.CREATE_SKILL;
+import static com.eviive.personalapi.entity.Scope.DELETE_PROJECT;
+import static com.eviive.personalapi.entity.Scope.DELETE_SKILL;
+import static com.eviive.personalapi.entity.Scope.READ_ACTUATOR;
+import static com.eviive.personalapi.entity.Scope.READ_PROJECT;
+import static com.eviive.personalapi.entity.Scope.READ_SKILL;
+import static com.eviive.personalapi.entity.Scope.REVALIDATE_PORTFOLIO;
+import static com.eviive.personalapi.entity.Scope.UPDATE_PROJECT;
+import static com.eviive.personalapi.entity.Scope.UPDATE_SKILL;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.HttpHeaders.ORIGIN;

@@ -1,4 +1,4 @@
-package com.eviive.personalapi.config;
+package com.eviive.personalapi.core.config;
 
 import org.springframework.boot.actuate.audit.AuditEventRepository;
 import org.springframework.boot.actuate.audit.InMemoryAuditEventRepository;

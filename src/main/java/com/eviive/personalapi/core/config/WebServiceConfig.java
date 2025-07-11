@@ -1,6 +1,6 @@
-package com.eviive.personalapi.config;
+package com.eviive.personalapi.core.config;
 
-import com.eviive.personalapi.properties.PortfolioPropertiesConfig;
+import com.eviive.personalapi.core.properties.PortfolioPropertiesConfig;
 import com.eviive.personalapi.service.web.PortfolioWebService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

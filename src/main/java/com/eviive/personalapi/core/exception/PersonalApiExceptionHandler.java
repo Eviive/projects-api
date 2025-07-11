@@ -1,4 +1,4 @@
-package com.eviive.personalapi.config.exception;
+package com.eviive.personalapi.core.exception;
 
 import com.eviive.personalapi.util.ErrorUtilities;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,12 +31,12 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.io.IOException;
 import java.util.stream.Collectors;
 
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_MISSING_SERVLET_REQUEST_PARAMETER;
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_TYPE_MISMATCH;
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API401_UNAUTHORIZED;
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API403_FORBIDDEN;
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API408_REQUEST_TIMEOUT;
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API400_MISSING_SERVLET_REQUEST_PARAMETER;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API400_TYPE_MISMATCH;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API401_UNAUTHORIZED;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API403_FORBIDDEN;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API408_REQUEST_TIMEOUT;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 

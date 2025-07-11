@@ -1,7 +1,7 @@
 package com.eviive.personalapi.util;
 
-import com.eviive.personalapi.config.exception.PersonalApiErrorsEnum;
-import com.eviive.personalapi.config.exception.PersonalApiException;
+import com.eviive.personalapi.core.exception.PersonalApiErrorsEnum;
+import com.eviive.personalapi.core.exception.PersonalApiException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.stereotype.Component;

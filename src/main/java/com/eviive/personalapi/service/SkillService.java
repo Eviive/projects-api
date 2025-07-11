@@ -1,6 +1,6 @@
 package com.eviive.personalapi.service;
 
-import com.eviive.personalapi.config.exception.PersonalApiException;
+import com.eviive.personalapi.core.exception.PersonalApiException;
 import com.eviive.personalapi.dto.SkillDTO;
 import com.eviive.personalapi.dto.SortUpdateDTO;
 import com.eviive.personalapi.entity.Skill;
@@ -17,8 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.UUID;
 
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API400_SKILL_ID_NOT_ALLOWED;
-import static com.eviive.personalapi.config.exception.PersonalApiErrorsEnum.API404_SKILL_ID_NOT_FOUND;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API400_SKILL_ID_NOT_ALLOWED;
+import static com.eviive.personalapi.core.exception.PersonalApiErrorsEnum.API404_SKILL_ID_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor

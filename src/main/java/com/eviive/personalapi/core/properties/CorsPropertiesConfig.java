@@ -1,4 +1,4 @@
-package com.eviive.personalapi.properties;
+package com.eviive.personalapi.core.properties;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
