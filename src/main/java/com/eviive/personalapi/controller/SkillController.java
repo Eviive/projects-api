@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ProblemDetail;
@@ -60,7 +61,7 @@ public class SkillController {
         responses = @ApiResponse(responseCode = "200", description = "OK")
     )
     public ResponseEntity<SliceDTO<SkillDTO>> findAll(
-        @SortDefault("sort") final Pageable pageable,
+        @ParameterObject @SortDefault("sort") final Pageable pageable,
         @RequestParam(required = false) final String search
     ) {
         return ResponseEntity.ok(

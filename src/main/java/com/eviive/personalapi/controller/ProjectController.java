@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.ProblemDetail;
@@ -52,7 +53,7 @@ public class ProjectController {
         responses = @ApiResponse(responseCode = "200", description = "OK")
     )
     public ResponseEntity<PageDTO<ProjectDTO>> findAll(
-        @SortDefault("sort") final Pageable pageable,
+        @ParameterObject @SortDefault("sort") final Pageable pageable,
         @RequestParam(required = false) final String search
     ) {
         return ResponseEntity.ok(
@@ -85,7 +86,9 @@ public class ProjectController {
         summary = "Find a page of not featured projects",
         responses = @ApiResponse(responseCode = "200", description = "OK")
     )
-    public ResponseEntity<PageDTO<ProjectDTO>> findAllNotFeatured(@SortDefault("sort") final Pageable pageable) {
+    public ResponseEntity<PageDTO<ProjectDTO>> findAllNotFeatured(
+        @ParameterObject @SortDefault("sort") final Pageable pageable
+    ) {
         return ResponseEntity.ok(
             PageDTO.of(
                 projectService.findAllNotFeatured(pageable)
