@@ -1,6 +1,18 @@
 package com.eviive.personalapi.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedSubgraph;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +25,7 @@ import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "API_PROJECT")
@@ -34,7 +46,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = SEQUENCE, generator = "PROJECT_GEN")
+    @SequenceGenerator(name = "PROJECT_GEN", sequenceName = "PROJECT_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false, length = 50)

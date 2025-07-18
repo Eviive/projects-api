@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 import static jakarta.persistence.EnumType.STRING;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "API_USER")
@@ -29,7 +30,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = SEQUENCE, generator = "USER_GEN")
+    @SequenceGenerator(name = "USER_GEN", sequenceName = "USER_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false, length = 50)

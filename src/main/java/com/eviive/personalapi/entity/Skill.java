@@ -8,6 +8,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.NamedAttributeNode;
 import jakarta.persistence.NamedEntityGraph;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,7 +21,7 @@ import java.util.Set;
 
 import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "API_SKILL")
@@ -33,7 +34,8 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 public class Skill {
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
+    @GeneratedValue(strategy = SEQUENCE, generator = "SKILL_GEN")
+    @SequenceGenerator(name = "SKILL_GEN", sequenceName = "SKILL_SEQ", allocationSize = 1)
     private Long id;
 
     @Column(nullable = false, length = 50)
