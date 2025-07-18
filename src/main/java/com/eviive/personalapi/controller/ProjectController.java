@@ -38,8 +38,6 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RestController
 @RequestMapping("project")
 @RequiredArgsConstructor
-// https://github.com/checkstyle/checkstyle/issues/10582
-@SuppressWarnings("checkstyle:Indentation")
 public class ProjectController {
 
     private final ProjectService projectService;

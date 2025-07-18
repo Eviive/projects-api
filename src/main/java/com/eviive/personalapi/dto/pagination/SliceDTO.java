@@ -9,7 +9,7 @@ public record SliceDTO<T>(
     SliceInfosDTO slice
 ) {
 
-    public static <T> SliceDTO<T> of(Slice<T> slice) {
+    public static <T> SliceDTO<T> of(final Slice<T> slice) {
         return new SliceDTO<>(
             slice.getContent(),
             new SliceInfosDTO(

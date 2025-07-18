@@ -9,7 +9,7 @@ public record PageDTO<T>(
     PageInfosDTO page
 ) {
 
-    public static <T> PageDTO<T> of(Page<T> page) {
+    public static <T> PageDTO<T> of(final Page<T> page) {
         return new PageDTO<>(
             page.getContent(),
             new PageInfosDTO(

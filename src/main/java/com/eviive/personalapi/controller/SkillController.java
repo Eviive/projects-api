@@ -37,8 +37,6 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RestController
 @RequestMapping("skill")
 @RequiredArgsConstructor
-// https://github.com/checkstyle/checkstyle/issues/10582
-@SuppressWarnings("checkstyle:Indentation")
 public class SkillController {
 
     private final SkillService skillService;

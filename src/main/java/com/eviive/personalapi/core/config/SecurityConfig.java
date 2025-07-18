@@ -54,7 +54,6 @@ public class SecurityConfig {
     private final PersonalApiExceptionHandler personalApiExceptionHandler;
 
     @Bean
-    @SuppressWarnings({"checkstyle:LambdaBodyLength", "checkstyle:MultipleStringLiterals"})
     public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http
             .csrf(AbstractHttpConfigurer::disable)

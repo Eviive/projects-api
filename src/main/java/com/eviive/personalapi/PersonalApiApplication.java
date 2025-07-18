@@ -6,7 +6,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan("com.eviive.personalapi.core.properties")
-@SuppressWarnings("checkstyle:HideUtilityClassConstructor")
 public class PersonalApiApplication {
 
     public static void main(final String[] args) {

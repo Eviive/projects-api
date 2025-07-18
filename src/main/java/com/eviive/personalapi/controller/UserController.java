@@ -30,8 +30,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @RequestMapping("user")
 @RequiredArgsConstructor
-// https://github.com/checkstyle/checkstyle/issues/10582
-@SuppressWarnings("checkstyle:Indentation")
 public class UserController {
 
     private final UserService userService;

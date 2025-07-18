@@ -11,5 +11,5 @@ jobs:
         uses: eviive/actions/validate/lint/checkstyle@main
         with:
           token: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
-          checkstyle_config: config/checkstyle/checkstyle.xml
+          checkstyle_config: config/checkstyle/config.xml
           checkstyle_version: 10.17.0

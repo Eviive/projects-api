@@ -13,7 +13,6 @@ import static org.springframework.http.HttpStatus.UNSUPPORTED_MEDIA_TYPE;
 
 @RequiredArgsConstructor
 @Getter
-@SuppressWarnings("checkstyle:LineLength")
 public enum PersonalApiErrorsEnum {
 
     // 400 Bad Request
