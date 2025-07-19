@@ -21,8 +21,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 import static com.eviive.personalapi.entity.Role.ANONYMOUS;
 import static com.eviive.personalapi.entity.Scope.CREATE_PROJECT;
 import static com.eviive.personalapi.entity.Scope.CREATE_SKILL;
@@ -34,9 +32,6 @@ import static com.eviive.personalapi.entity.Scope.READ_SKILL;
 import static com.eviive.personalapi.entity.Scope.REVALIDATE_PORTFOLIO;
 import static com.eviive.personalapi.entity.Scope.UPDATE_PROJECT;
 import static com.eviive.personalapi.entity.Scope.UPDATE_SKILL;
-import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
-import static org.springframework.http.HttpHeaders.ORIGIN;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PATCH;
@@ -53,8 +48,10 @@ public class SecurityConfig {
 
     private final PersonalApiExceptionHandler personalApiExceptionHandler;
 
+    private final CorsPropertiesConfig corsPropertiesConfig;
+
     @Bean
-    public SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(final HttpSecurity http) throws Exception {
         return http
             .csrf(AbstractHttpConfigurer::disable)
             .cors(Customizer.withDefaults())
@@ -116,7 +113,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public RoleHierarchy roleHierarchy() {
+    RoleHierarchy roleHierarchy() {
         final Role[] roles = Role.values();
 
         final RoleHierarchyImpl.Builder builder = RoleHierarchyImpl.withDefaultRolePrefix();
@@ -140,19 +137,15 @@ public class SecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource(final CorsPropertiesConfig corsPropertiesConfig) {
-        final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(corsPropertiesConfig.allowedOrigins());
-        configuration.addAllowedMethod("*");
-        configuration.setAllowedHeaders(List.of(AUTHORIZATION, ORIGIN, CONTENT_TYPE));
-        configuration.setAllowCredentials(true);
+    CorsConfigurationSource corsConfigurationSource() {
+        final CorsConfiguration configuration = corsPropertiesConfig.getConfiguration();
         final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

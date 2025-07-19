@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
@@ -39,6 +40,7 @@ import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 @RestController
 @RequestMapping("project")
 @RequiredArgsConstructor
+@Tag(name = "Project")
 public class ProjectController {
 
     private final ProjectService projectService;

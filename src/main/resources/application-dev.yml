@@ -1,0 +1,21 @@
+personal-api:
+  cors:
+    allowed-origins: http://localhost:3000,http://localhost:3001
+  portfolio:
+    api:
+      url: http://localhost:3000/api
+      secret: revalidate-secret
+  jwt:
+    secret: secret-key
+
+spring:
+  datasource:
+    username: personal-api-user
+    url: jdbc:postgresql://localhost:5432/personal-api-db
+    password: personal-api-password
+  jpa:
+    show-sql: true
+
+info:
+  app:
+    stage: Development

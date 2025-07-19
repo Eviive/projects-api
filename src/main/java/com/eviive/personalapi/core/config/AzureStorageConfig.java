@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 public class AzureStorageConfig {
 
     @Bean
-    public BlobServiceClient blobServiceClient(
+    BlobServiceClient blobServiceClient(
         final AzureStoragePropertiesConfig azureStoragePropertiesConfig
     ) {
         return new BlobServiceClientBuilder()

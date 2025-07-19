@@ -1,0 +1,79 @@
+personal-api:
+  production: false
+  cors:
+    allowed-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
+    allowed-headers: Access-Control-Allow-Headers, Access-Control-Allow-Origin, Authorization, X-Requested-With, X-Auth-Token, Content-Type, Accept, X-CSRF-TOKEN, X-Frame-Options
+    exposed-headers: Content-Disposition
+    allow-credentials: true
+    max-age: 3600
+  jwt:
+    token:
+      access:
+        expiration: 900 # 15 minutes
+      refresh:
+        expiration: 604800 # 7 days
+  azure:
+    storage:
+      blob:
+        projects:
+          container-name: projects
+        skills:
+          container-name: skills
+
+spring:
+  application:
+    name: \${info.app.name}
+  config:
+    import: optional:secrets.yml
+  jackson:
+    default-property-inclusion: NON_NULL
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 3MB
+  web:
+    locale: en_US
+    locale-resolver: fixed
+  threads:
+    virtual:
+      enabled: true
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    operationsSorter: alpha
+    tagsSorter: alpha
+    display-request-duration: true
+
+management:
+  endpoints:
+    web:
+      cors:
+        allowed-origin-patterns: \${personal-api.cors.allowed-origins}
+        allowed-methods: \${personal-api.cors.allowed-methods}
+        allowed-headers: \${personal-api.cors.allowed-headers}
+        exposed-headers: \${personal-api.cors.exposed-headers}
+        allow-credentials: \${personal-api.cors.allow-credentials}
+        max-age: \${personal-api.cors.max-age}
+      exposure:
+        include: info,health
+  endpoint:
+    info:
+      access: read_only
+    health:
+      probes:
+        enabled: true
+  info:
+    env:
+      enabled: true
+
+info:
+    app:
+      name: Personal-API
+      version: ${version}

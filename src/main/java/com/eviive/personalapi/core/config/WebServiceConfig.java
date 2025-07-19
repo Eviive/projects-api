@@ -37,7 +37,7 @@ public class WebServiceConfig {
     }
 
     @Bean
-    public PortfolioWebService portfolioWebService(final PortfolioPropertiesConfig portfolioPropertiesConfig) {
+    PortfolioWebService portfolioWebService(final PortfolioPropertiesConfig portfolioPropertiesConfig) {
         final Class<PortfolioWebService> clazz = PortfolioWebService.class;
         return buildWebService(
             buildWebClient(portfolioPropertiesConfig.api().url(), clazz),
