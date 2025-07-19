@@ -1,14 +1,14 @@
 services:
   database:
-    container_name: personal-api-postgres-dev
+    container_name: projects-api-postgres-dev
     image: postgres:17.5-alpine
     restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: personal-api-user
-      POSTGRES_PASSWORD: personal-api-password
-      POSTGRES_DB: personal-api-db
+      POSTGRES_USER: projects-api-user
+      POSTGRES_PASSWORD: projects-api-password
+      POSTGRES_DB: projects-api-db
     volumes:
       - postgres-dev-data:/var/lib/postgresql/data
 

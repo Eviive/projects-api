@@ -21,4 +21,4 @@ COPY --from=build ${DEPENDENCY}/BOOT-INF/lib     ./lib
 COPY --from=build ${DEPENDENCY}/META-INF         ./META-INF
 COPY --from=build ${DEPENDENCY}/BOOT-INF/classes ./
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-cp", ".:lib/*", "com.eviive.personalapi.PersonalApiApplication"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-cp", ".:lib/*", "dev.albertv.projects.api.ProjectsApiApplication"]

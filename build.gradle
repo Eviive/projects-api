@@ -13,7 +13,7 @@ plugins {
     id "checkstyle"
 }
 
-group = "com.eviive.personalapi"
+group = "dev.albertv.projects.api"
 version = "1.4.0"
 
 java {

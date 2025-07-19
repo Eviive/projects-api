@@ -1,0 +1,97 @@
+package dev.albertv.projects.api.util;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import dev.albertv.projects.api.core.properties.JwtPropertiesConfig;
+import dev.albertv.projects.api.core.properties.ProjectsApiPropertiesConfig;
+import jakarta.servlet.http.Cookie;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import java.time.Instant;
+import java.util.Collection;
+import java.util.List;
+
+@Component
+public final class TokenUtils {
+
+    public static final String REFRESH_TOKEN_COOKIE = "projects-api_refresh-token";
+
+    public static final String AUTHORITIES_CLAIM = "authorities";
+
+    private final Algorithm algorithm;
+    private final JWTVerifier verifier;
+
+    private final UriUtils uriUtils;
+
+    private final ProjectsApiPropertiesConfig projectsApiPropertiesConfig;
+    private final JwtPropertiesConfig jwtPropertiesConfig;
+
+    public TokenUtils(
+        final UriUtils uriUtils,
+        final ProjectsApiPropertiesConfig projectsApiPropertiesConfig,
+        final JwtPropertiesConfig jwtPropertiesConfig
+    ) {
+        this.algorithm = Algorithm.HMAC256(jwtPropertiesConfig.secret());
+        this.verifier = JWT.require(algorithm).build();
+        this.uriUtils = uriUtils;
+        this.projectsApiPropertiesConfig = projectsApiPropertiesConfig;
+        this.jwtPropertiesConfig = jwtPropertiesConfig;
+    }
+
+    public String generateAccessToken(
+        final String username,
+        final Collection<? extends GrantedAuthority> authorities
+    ) {
+        final List<String> authoritiesClaimContent = authorities
+            .stream()
+            .map(GrantedAuthority::getAuthority)
+            .toList();
+
+        return JWT.create()
+            .withSubject(username)
+            .withExpiresAt(
+                Instant
+                    .now()
+                    .plusSeconds(jwtPropertiesConfig.token().access().expiration())
+            )
+            .withIssuer(uriUtils.getCurrentUri().toString())
+            .withClaim(AUTHORITIES_CLAIM, authoritiesClaimContent)
+            .sign(algorithm);
+    }
+
+
+    public Cookie generateRefreshTokenCookie(final String username) {
+        final String refreshToken = JWT.create()
+            .withSubject(username)
+            .withExpiresAt(
+                Instant
+                    .now()
+                    .plusSeconds(jwtPropertiesConfig.token().refresh().expiration())
+            )
+            .withIssuer(uriUtils.getCurrentUri().toString())
+            .sign(algorithm);
+
+        return createCookie(refreshToken, jwtPropertiesConfig.token().refresh().expiration());
+    }
+
+    public DecodedJWT verifyToken(final String token) {
+        return verifier.verify(token);
+    }
+
+    public Cookie createCookie(final String value, final int maxAge) {
+        final Cookie cookie = new Cookie(REFRESH_TOKEN_COOKIE, value);
+        cookie.setMaxAge(maxAge);
+        cookie.setSecure(projectsApiPropertiesConfig.production());
+        cookie.setHttpOnly(true);
+        cookie.setPath("/");
+        return cookie;
+    }
+
+    public Cookie deleteCookie() {
+        return createCookie(null, 0);
+    }
+
+}

@@ -1,4 +1,4 @@
-personal-api:
+projects-api:
   production: true
   cors:
     allowed-origins: https://api.albertv.dev,https://albertv.dev,https://www.albertv.dev
@@ -15,7 +15,7 @@ info:
 
 logging:
   level:
-    com:
-      eviive:
-        personalapi: INFO
+    dev:
+      albertv:
+        projects: INFO
     web: INFO

@@ -1,4 +1,4 @@
-personal-api:
+projects-api:
   production: false
   cors:
     allowed-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
@@ -55,12 +55,12 @@ management:
   endpoints:
     web:
       cors:
-        allowed-origin-patterns: \${personal-api.cors.allowed-origins}
-        allowed-methods: \${personal-api.cors.allowed-methods}
-        allowed-headers: \${personal-api.cors.allowed-headers}
-        exposed-headers: \${personal-api.cors.exposed-headers}
-        allow-credentials: \${personal-api.cors.allow-credentials}
-        max-age: \${personal-api.cors.max-age}
+        allowed-origin-patterns: \${projects-api.cors.allowed-origins}
+        allowed-methods: \${projects-api.cors.allowed-methods}
+        allowed-headers: \${projects-api.cors.allowed-headers}
+        exposed-headers: \${projects-api.cors.exposed-headers}
+        allow-credentials: \${projects-api.cors.allow-credentials}
+        max-age: \${projects-api.cors.max-age}
       exposure:
         include: info,health
   endpoint:
@@ -75,5 +75,5 @@ management:
 
 info:
     app:
-      name: Personal-API
+      name: Projects-API
       version: ${version}

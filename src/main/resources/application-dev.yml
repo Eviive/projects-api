@@ -1,4 +1,4 @@
-personal-api:
+projects-api:
   cors:
     allowed-origins: http://localhost:3000,http://localhost:3001
   portfolio:
@@ -10,9 +10,9 @@ personal-api:
 
 spring:
   datasource:
-    username: personal-api-user
-    url: jdbc:postgresql://localhost:5432/personal-api-db
-    password: personal-api-password
+    username: projects-api-user
+    url: jdbc:postgresql://localhost:5432/projects-api-db
+    password: projects-api-password
   jpa:
     show-sql: true
 
