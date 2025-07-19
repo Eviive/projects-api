@@ -1,3 +1,5 @@
+stage: Production
+
 projects-api:
   production: true
   cors:
@@ -8,10 +10,6 @@ projects-api:
 
 server:
   forward-headers-strategy: native
-
-info:
-  app:
-    stage: Production
 
 logging:
   level:

@@ -22,7 +22,8 @@ projects-api:
 
 spring:
   application:
-    name: \${info.app.name}
+    name: personal-api
+    version: ${version}
   config:
     import: optional:secrets.yml
   jackson:
@@ -75,5 +76,5 @@ management:
 
 info:
     app:
-      name: Projects-API
-      version: ${version}
+      version: \${spring.application.version}
+      stage: \${stage}

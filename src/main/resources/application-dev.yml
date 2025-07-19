@@ -1,3 +1,5 @@
+stage: Development
+
 projects-api:
   cors:
     allowed-origins: http://localhost:3000,http://localhost:3001
@@ -15,7 +17,3 @@ spring:
     password: projects-api-password
   jpa:
     show-sql: true
-
-info:
-  app:
-    stage: Development
