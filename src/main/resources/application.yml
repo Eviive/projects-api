@@ -6,12 +6,6 @@ projects-api:
     exposed-headers: Content-Disposition
     allow-credentials: true
     max-age: 3600
-  jwt:
-    token:
-      access:
-        expiration: 900 # 15 minutes
-      refresh:
-        expiration: 604800 # 7 days
   azure:
     storage:
       blob:
@@ -75,6 +69,19 @@ management:
       enabled: true
 
 info:
-    app:
-      version: \${spring.application.version}
-      stage: \${stage}
+  app:
+    version: \${spring.application.version}
+    stage: \${stage}
+
+com:
+  c4-soft:
+    springaddons:
+      oidc:
+        ops:
+          - iss: https://authentik.home.albertv.dev/application/o/projects/
+            username-claim: \$.preferred_username
+            authorities:
+              - path: \$.groups
+        resourceserver:
+          permit-all:
+            - /api/me

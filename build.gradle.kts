@@ -48,12 +48,13 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
-    // Auth0 JWT
-    implementation("com.auth0:java-jwt:4.5.0")
+    // Spring Addons
+    implementation("com.c4-soft.springaddons:spring-addons-starter-oidc:8.1.18")
 
     // Azure
     implementation("com.azure.spring:spring-cloud-azure-starter-actuator")

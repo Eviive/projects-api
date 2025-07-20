@@ -7,8 +7,6 @@ projects-api:
     api:
       url: http://localhost:3000/api
       secret: revalidate-secret
-  jwt:
-    secret: secret-key
 
 spring:
   datasource:

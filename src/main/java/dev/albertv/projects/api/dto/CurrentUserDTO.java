@@ -3,11 +3,14 @@ package dev.albertv.projects.api.dto;
 import java.util.Set;
 
 public record CurrentUserDTO(
-    Long id,
     String username,
-    String firstName,
-    String lastName,
-    Set<String> authorities
+    String email,
+    Set<String> authorities,
+    Long exp
 ) {
+
+    public static CurrentUserDTO anonymous() {
+        return new CurrentUserDTO("Guest", null, Set.of(), null);
+    }
 
 }

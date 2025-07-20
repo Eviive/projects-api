@@ -17,7 +17,6 @@ public enum ProjectsApiErrorsEnum {
 
     // 400 Bad Request
 
-    API400_REFRESH_TOKEN_NOT_FOUND("No refresh token was found in the request.", BAD_REQUEST, false),
     API400_FILE_EMPTY("The received file is empty.", BAD_REQUEST),
     API400_IMAGE_NO_NAME("The received image has no name.", BAD_REQUEST),
     API400_MISSING_SERVLET_REQUEST_PARAMETER("The request parameter %s of type %s is missing.", BAD_REQUEST),
@@ -28,8 +27,6 @@ public enum ProjectsApiErrorsEnum {
     // 401 Unauthorized
 
     API401_UNAUTHORIZED("You are not authorized to access this resource.", UNAUTHORIZED),
-    API401_LOGIN_FAILED("Login failed: %s.", UNAUTHORIZED),
-    API401_TOKEN_ERROR("An error occurred while processing the token: %s.", UNAUTHORIZED),
 
     // 403 Forbidden
 
@@ -37,7 +34,6 @@ public enum ProjectsApiErrorsEnum {
 
     // 404 Not Found
 
-    API404_USERNAME_NOT_FOUND("The user with username %s was not found.", NOT_FOUND),
     API404_PROJECT_ID_NOT_FOUND("Project with id %d was not found.", NOT_FOUND),
     API404_SKILL_ID_NOT_FOUND("Skill with id %d was not found.", NOT_FOUND),
 

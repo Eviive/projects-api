@@ -28,7 +28,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "API_PROJECT")
+@Table(name = "PROJECT")
 @NamedEntityGraph(name = "project-image", attributeNodes = @NamedAttributeNode("image"))
 @NamedEntityGraph(
     name = "project-image-skills-image",
@@ -80,7 +80,7 @@ public class Project {
 
     @ManyToMany(fetch = LAZY)
     @JoinTable(
-        name = "API_PROJECT_SKILL_MAP",
+        name = "PROJECT_SKILL_MAP",
         joinColumns = @JoinColumn(name = "PROJECT_ID"),
         inverseJoinColumns = @JoinColumn(name = "SKILL_ID")
     )

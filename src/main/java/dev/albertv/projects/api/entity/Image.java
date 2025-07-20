@@ -20,7 +20,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "API_IMAGE")
+@Table(name = "IMAGE")
 @Getter
 @Setter
 @ToString

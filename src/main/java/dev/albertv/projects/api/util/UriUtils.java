@@ -8,13 +8,6 @@ import java.net.URI;
 @Component
 public final class UriUtils {
 
-    public URI getCurrentUri() {
-        return ServletUriComponentsBuilder
-            .fromCurrentRequest()
-            .build()
-            .toUri();
-    }
-
     public URI buildLocation(final Long id, final String pathToRemove) {
         String path = ServletUriComponentsBuilder
             .fromCurrentRequest()

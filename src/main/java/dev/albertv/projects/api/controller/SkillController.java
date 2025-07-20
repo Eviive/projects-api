@@ -37,7 +37,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
-@RequestMapping("skill")
+@RequestMapping("/api/skill")
 @RequiredArgsConstructor
 @Tag(name = "Skill")
 public class SkillController {
@@ -57,7 +57,7 @@ public class SkillController {
         return ResponseEntity.ok(skillService.findAll());
     }
 
-    @GetMapping(path = "slice", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/slice", produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Find a slice of skills",
         responses = @ApiResponse(responseCode = "200", description = "OK")
@@ -95,7 +95,7 @@ public class SkillController {
             .body(createdSkill);
     }
 
-    @PostMapping(path = "with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Create a skill with an image",
         responses = {
@@ -125,7 +125,7 @@ public class SkillController {
 
     // PUT
 
-    @PutMapping(path = "{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Update a skill",
         responses = {
@@ -149,7 +149,7 @@ public class SkillController {
         return ResponseEntity.ok(skillService.update(id, skillDTO, null));
     }
 
-    @PutMapping(path = "{id}/with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}/with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Update a skill with an image",
         responses = {
@@ -181,7 +181,7 @@ public class SkillController {
 
     // PATCH
 
-    @PatchMapping(path = "sort", consumes = APPLICATION_JSON_VALUE)
+    @PatchMapping(path = "/sort", consumes = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Sort skills",
         responses = @ApiResponse(responseCode = "204", description = "No Content")
@@ -193,7 +193,7 @@ public class SkillController {
 
     // DELETE
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     @Operation(
         summary = "Delete a skill",
         responses = {

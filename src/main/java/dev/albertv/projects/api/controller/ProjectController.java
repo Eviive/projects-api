@@ -38,7 +38,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE;
 
 @RestController
-@RequestMapping("project")
+@RequestMapping("/api/project")
 @RequiredArgsConstructor
 @Tag(name = "Project")
 public class ProjectController {
@@ -49,7 +49,7 @@ public class ProjectController {
 
     // GET
 
-    @GetMapping(path = "page", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/page", produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Find a page of projects",
         responses = @ApiResponse(responseCode = "200", description = "OK")
@@ -65,7 +65,7 @@ public class ProjectController {
         );
     }
 
-    @GetMapping(path = "light", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/light", produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Find all light projects",
         responses = @ApiResponse(responseCode = "200", description = "OK")
@@ -74,7 +74,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.findAllLight());
     }
 
-    @GetMapping(path = "featured", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/featured", produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Find all featured projects",
         responses = @ApiResponse(responseCode = "200", description = "OK")
@@ -83,7 +83,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.findAllFeatured());
     }
 
-    @GetMapping(path = "not-featured", produces = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/not-featured", produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Find a page of not featured projects",
         responses = @ApiResponse(responseCode = "200", description = "OK")
@@ -120,7 +120,7 @@ public class ProjectController {
             .body(createdProject);
     }
 
-    @PostMapping(path = "with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Create a project with an image",
         responses = {
@@ -150,7 +150,7 @@ public class ProjectController {
 
     // PUT
 
-    @PutMapping(path = "{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Update a project",
         responses = {
@@ -174,7 +174,7 @@ public class ProjectController {
         return ResponseEntity.ok(projectService.update(id, projectDTO, null));
     }
 
-    @PutMapping(path = "{id}/with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
+    @PutMapping(path = "/{id}/with-image", consumes = MULTIPART_FORM_DATA_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Update a project with an image",
         responses = {
@@ -201,7 +201,7 @@ public class ProjectController {
 
     // PATCH
 
-    @PatchMapping(path = "sort", consumes = APPLICATION_JSON_VALUE)
+    @PatchMapping(path = "/sort", consumes = APPLICATION_JSON_VALUE)
     @Operation(
         summary = "Sort projects",
         responses = @ApiResponse(responseCode = "204", description = "No Content")
@@ -213,7 +213,7 @@ public class ProjectController {
 
     // DELETE
 
-    @DeleteMapping(path = "{id}")
+    @DeleteMapping(path = "/{id}")
     @Operation(
         summary = "Delete a project",
         responses = {

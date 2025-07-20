@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("portfolio")
+@RequestMapping("/api/portfolio")
 @RequiredArgsConstructor
 @Tag(name = "Portfolio")
 public class PortfolioController {
 
     private final PortfolioService portfolioService;
 
-    @PostMapping("revalidate")
+    @PostMapping("/revalidate")
     @Operation(
         summary = "Revalidate the portfolio",
         responses = @ApiResponse(responseCode = "204", description = "No Content")

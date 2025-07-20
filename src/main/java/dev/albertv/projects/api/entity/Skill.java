@@ -24,7 +24,7 @@ import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "API_SKILL")
+@Table(name = "SKILL")
 @NamedEntityGraph(name = "skill-image", attributeNodes = @NamedAttributeNode("image"))
 @Getter
 @Setter
