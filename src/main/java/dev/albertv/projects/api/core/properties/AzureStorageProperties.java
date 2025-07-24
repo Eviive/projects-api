@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "projects-api.azure.storage")
 @Validated
-public record AzureStoragePropertiesConfig(
+public record AzureStorageProperties(
     @NotBlank(message = "The Azure Storage connection string must be specified.")
     String connectionString,
     @NotNull(message = "The Azure Storage Blob properties must be specified.")

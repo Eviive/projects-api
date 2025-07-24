@@ -14,7 +14,6 @@ import static dev.albertv.projects.api.entity.Scope.CREATE_PROJECT;
 import static dev.albertv.projects.api.entity.Scope.CREATE_SKILL;
 import static dev.albertv.projects.api.entity.Scope.DELETE_PROJECT;
 import static dev.albertv.projects.api.entity.Scope.DELETE_SKILL;
-import static dev.albertv.projects.api.entity.Scope.READ_ACTUATOR;
 import static dev.albertv.projects.api.entity.Scope.READ_PROJECT;
 import static dev.albertv.projects.api.entity.Scope.READ_SKILL;
 import static dev.albertv.projects.api.entity.Scope.REVALIDATE_PORTFOLIO;
@@ -35,8 +34,7 @@ public enum Role {
         Set.of(
             CREATE_PROJECT, UPDATE_PROJECT, DELETE_PROJECT,
             CREATE_SKILL, UPDATE_SKILL, DELETE_SKILL,
-            REVALIDATE_PORTFOLIO,
-            READ_ACTUATOR
+            REVALIDATE_PORTFOLIO
         ),
         Set.of(
             ANONYMOUS

@@ -9,8 +9,4 @@ public record CurrentUserDTO(
     Long exp
 ) {
 
-    public static CurrentUserDTO anonymous() {
-        return new CurrentUserDTO("Guest", null, Set.of(), null);
-    }
-
 }

@@ -18,10 +18,10 @@ import static io.swagger.v3.oas.annotations.enums.SecuritySchemeType.HTTP;
             url = "https://albertv.dev",
             email = "albert.vaillon21@gmail.com"
         ),
-        version = "${info.app.version}"
+        version = "${projects-api.version}"
     ),
     servers = {
-        @Server(description = "Local environment", url = "http://localhost:8080"),
+        @Server(description = "Local environment", url = "http://localhost:8081"),
         @Server(description = "Production environment", url = "https://api.albertv.dev")
     },
     security = {

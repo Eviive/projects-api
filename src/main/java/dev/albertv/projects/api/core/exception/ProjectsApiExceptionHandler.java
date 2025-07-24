@@ -1,9 +1,6 @@
 package dev.albertv.projects.api.core.exception;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.albertv.projects.api.util.ErrorUtils;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.TypeMismatchException;
@@ -12,10 +9,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,27 +17,20 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.io.IOException;
 import java.util.stream.Collectors;
 
 import static dev.albertv.projects.api.core.exception.ProjectsApiErrorsEnum.API400_MISSING_SERVLET_REQUEST_PARAMETER;
 import static dev.albertv.projects.api.core.exception.ProjectsApiErrorsEnum.API400_TYPE_MISMATCH;
-import static dev.albertv.projects.api.core.exception.ProjectsApiErrorsEnum.API401_UNAUTHORIZED;
-import static dev.albertv.projects.api.core.exception.ProjectsApiErrorsEnum.API403_FORBIDDEN;
 import static dev.albertv.projects.api.core.exception.ProjectsApiErrorsEnum.API500_INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
-public class ProjectsApiExceptionHandler extends ResponseEntityExceptionHandler
-    implements AuthenticationEntryPoint, AccessDeniedHandler {
+public class ProjectsApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String NEW_LINE = "\n";
 
     private final ErrorUtils errorUtils;
-
-    private final ObjectMapper objectMapper;
 
     @ExceptionHandler(Exception.class)
     public final ResponseEntity<ProblemDetail> handleAllExceptions(
@@ -151,24 +137,6 @@ public class ProjectsApiExceptionHandler extends ResponseEntityExceptionHandler
         return handleBadRequestException(API400_TYPE_MISMATCH, e.getPropertyName());
     }
 
-    @Override
-    public void commence(
-        final HttpServletRequest req,
-        final HttpServletResponse res,
-        final AuthenticationException authException
-    ) {
-        sendError(res, API401_UNAUTHORIZED);
-    }
-
-    @Override
-    public void handle(
-        final HttpServletRequest req,
-        final HttpServletResponse res,
-        final AccessDeniedException accessDeniedException
-    ) {
-        sendError(res, API403_FORBIDDEN);
-    }
-
     private ResponseEntity<Object> handleBadRequestException(final String detail) {
         return ResponseEntity
             .badRequest()
@@ -180,19 +148,6 @@ public class ProjectsApiExceptionHandler extends ResponseEntityExceptionHandler
         final Object... args
     ) {
         return handleBadRequestException(projectsApiErrorsEnum.getMessage().formatted(args));
-    }
-
-    private void sendError(final HttpServletResponse res, final ProjectsApiErrorsEnum projectsApiErrorsEnum) {
-        final ProblemDetail errorResponse = errorUtils.buildError(projectsApiErrorsEnum);
-
-        res.setStatus(errorResponse.getStatus());
-        res.setContentType(APPLICATION_JSON_VALUE);
-        try {
-            res.getOutputStream().print(objectMapper.writeValueAsString(errorResponse));
-            res.flushBuffer();
-        } catch (IOException e) {
-            logger.warn(e.getMessage(), e);
-        }
     }
 
 }

@@ -1,9 +1,6 @@
-stage: Production
-
 projects-api:
+  stage: Production
   production: true
-  cors:
-    allowed-origins: https://api.albertv.dev,https://albertv.dev,https://www.albertv.dev
   portfolio:
     api:
       url: https://albertv.dev/api

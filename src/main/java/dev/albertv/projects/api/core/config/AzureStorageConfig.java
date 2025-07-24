@@ -2,7 +2,7 @@ package dev.albertv.projects.api.core.config;
 
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
-import dev.albertv.projects.api.core.properties.AzureStoragePropertiesConfig;
+import dev.albertv.projects.api.core.properties.AzureStorageProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,10 +11,10 @@ public class AzureStorageConfig {
 
     @Bean
     BlobServiceClient blobServiceClient(
-        final AzureStoragePropertiesConfig azureStoragePropertiesConfig
+        final AzureStorageProperties azureStorageProperties
     ) {
         return new BlobServiceClientBuilder()
-            .connectionString(azureStoragePropertiesConfig.connectionString())
+            .connectionString(azureStorageProperties.connectionString())
             .buildClient();
     }
 

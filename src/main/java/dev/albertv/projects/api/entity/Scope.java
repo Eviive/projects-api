@@ -17,9 +17,7 @@ public enum Scope {
     UPDATE_SKILL("update:skill"),
     DELETE_SKILL("delete:skill"),
 
-    REVALIDATE_PORTFOLIO("revalidate:portfolio"),
-
-    READ_ACTUATOR("read:actuator");
+    REVALIDATE_PORTFOLIO("revalidate:portfolio");
 
     private final String name;
 

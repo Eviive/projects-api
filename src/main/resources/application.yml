@@ -1,11 +1,6 @@
 projects-api:
   production: false
-  cors:
-    allowed-methods: GET, POST, PUT, PATCH, DELETE, OPTIONS
-    allowed-headers: Access-Control-Allow-Headers, Access-Control-Allow-Origin, Authorization, X-Requested-With, X-Auth-Token, Content-Type, Accept, X-CSRF-TOKEN, X-Frame-Options
-    exposed-headers: Content-Disposition
-    allow-credentials: true
-    max-age: 3600
+  version: ${version}
   azure:
     storage:
       blob:
@@ -49,29 +44,12 @@ springdoc:
 management:
   endpoints:
     web:
-      cors:
-        allowed-origin-patterns: \${projects-api.cors.allowed-origins}
-        allowed-methods: \${projects-api.cors.allowed-methods}
-        allowed-headers: \${projects-api.cors.allowed-headers}
-        exposed-headers: \${projects-api.cors.exposed-headers}
-        allow-credentials: \${projects-api.cors.allow-credentials}
-        max-age: \${projects-api.cors.max-age}
       exposure:
-        include: info,health
+        include: health
   endpoint:
-    info:
-      access: read_only
     health:
       probes:
         enabled: true
-  info:
-    env:
-      enabled: true
-
-info:
-  app:
-    version: \${spring.application.version}
-    stage: \${stage}
 
 com:
   c4-soft:
@@ -82,6 +60,3 @@ com:
             username-claim: \$.preferred_username
             authorities:
               - path: \$.groups
-        resourceserver:
-          permit-all:
-            - /api/me

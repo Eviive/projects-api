@@ -1,7 +1,7 @@
 package dev.albertv.projects.api.service;
 
 import dev.albertv.projects.api.core.exception.ProjectsApiException;
-import dev.albertv.projects.api.core.properties.PortfolioPropertiesConfig;
+import dev.albertv.projects.api.core.properties.PortfolioProperties;
 import dev.albertv.projects.api.dto.web.RevalidateRequestDTO;
 import dev.albertv.projects.api.dto.web.RevalidateResponseDTO;
 import dev.albertv.projects.api.service.web.PortfolioWebService;
@@ -18,11 +18,11 @@ public class PortfolioService {
 
     private final PortfolioWebService portfolioWebService;
 
-    private final PortfolioPropertiesConfig portfolioPropertiesConfig;
+    private final PortfolioProperties portfolioProperties;
 
     public void revalidate() {
         final RevalidateRequestDTO revalidateRequest = new RevalidateRequestDTO(
-            portfolioPropertiesConfig.api().secret(),
+            portfolioProperties.api().secret(),
             "/"
         );
 

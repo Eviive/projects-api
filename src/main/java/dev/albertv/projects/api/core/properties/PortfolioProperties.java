@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 @ConfigurationProperties(prefix = "projects-api.portfolio")
 @Validated
-public record PortfolioPropertiesConfig(
+public record PortfolioProperties(
     @NotNull(message = "The portfolio API configuration must be specified.")
     Api api
 ) {

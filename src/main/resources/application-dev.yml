@@ -1,8 +1,5 @@
-stage: Development
-
 projects-api:
-  cors:
-    allowed-origins: http://localhost:3000,http://localhost:3001
+  stage: Development
   portfolio:
     api:
       url: http://localhost:3000/api

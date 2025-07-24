@@ -1,6 +1,6 @@
 package dev.albertv.projects.api.core.config;
 
-import dev.albertv.projects.api.core.properties.PortfolioPropertiesConfig;
+import dev.albertv.projects.api.core.properties.PortfolioProperties;
 import dev.albertv.projects.api.service.web.PortfolioWebService;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -37,10 +37,10 @@ public class WebServiceConfig {
     }
 
     @Bean
-    PortfolioWebService portfolioWebService(final PortfolioPropertiesConfig portfolioPropertiesConfig) {
+    PortfolioWebService portfolioWebService(final PortfolioProperties portfolioProperties) {
         final Class<PortfolioWebService> clazz = PortfolioWebService.class;
         return buildWebService(
-            buildWebClient(portfolioPropertiesConfig.api().url(), clazz),
+            buildWebClient(portfolioProperties.api().url(), clazz),
             clazz
         );
     }
