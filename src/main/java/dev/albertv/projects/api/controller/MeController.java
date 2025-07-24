@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +27,8 @@ public class MeController {
         summary = "Me",
         responses = @ApiResponse(responseCode = "200", description = "OK")
     )
-    public CurrentUserDTO findMe(final Authentication authentication) {
-        return service.findMe(authentication);
+    public CurrentUserDTO findMe() {
+        return service.findMe();
     }
 
 }
