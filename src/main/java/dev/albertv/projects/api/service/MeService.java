@@ -1,6 +1,8 @@
 package dev.albertv.projects.api.service;
 
 import dev.albertv.projects.api.dto.CurrentUserDTO;
+import dev.albertv.projects.api.util.HashUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +18,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class MeService {
+
+    private final HashUtils hashUtils;
 
     public CurrentUserDTO findMe() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -40,10 +45,14 @@ public class MeService {
                 default -> null;
             };
 
+            final String avatar = "https://gravatar.com/avatar/%s?default=retro"
+                .formatted(hashUtils.sha256Hex(email));
+
             return new CurrentUserDTO(
                 authentication.getName(),
                 email,
                 name,
+                avatar,
                 authorities,
                 exp
             );
@@ -53,6 +62,7 @@ public class MeService {
             null,
             null,
             "Guest",
+            null,
             authorities,
             null
         );
