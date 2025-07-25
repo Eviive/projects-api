@@ -59,4 +59,5 @@ com:
           - iss: https://authentik.home.albertv.dev/application/o/projects/
             username-claim: \$.preferred_username
             authorities:
-              - path: \$.groups
+              - path: \$.entitlements
+                caze: upper

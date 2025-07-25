@@ -1,25 +1,29 @@
-package dev.albertv.projects.api.core.config;
+package dev.albertv.projects.api.core.config.security;
 
+import com.c4_soft.springaddons.security.oidc.starter.ClaimSetAuthoritiesConverter;
+import com.c4_soft.springaddons.security.oidc.starter.ConfigurableClaimSetAuthoritiesConverter;
+import com.c4_soft.springaddons.security.oidc.starter.OpenidProviderPropertiesResolver;
 import com.c4_soft.springaddons.security.oidc.starter.synchronised.resourceserver.ResourceServerExpressionInterceptUrlRegistryPostProcessor;
 import com.c4_soft.springaddons.security.oidc.starter.synchronised.resourceserver.ResourceServerSynchronizedHttpSecurityPostProcessor;
-import dev.albertv.projects.api.entity.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
-import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.GrantedAuthority;
 
-import static dev.albertv.projects.api.entity.Role.ANONYMOUS;
-import static dev.albertv.projects.api.entity.Scope.CREATE_PROJECT;
-import static dev.albertv.projects.api.entity.Scope.CREATE_SKILL;
-import static dev.albertv.projects.api.entity.Scope.DELETE_PROJECT;
-import static dev.albertv.projects.api.entity.Scope.DELETE_SKILL;
-import static dev.albertv.projects.api.entity.Scope.READ_PROJECT;
-import static dev.albertv.projects.api.entity.Scope.READ_SKILL;
-import static dev.albertv.projects.api.entity.Scope.REVALIDATE_PORTFOLIO;
-import static dev.albertv.projects.api.entity.Scope.UPDATE_PROJECT;
-import static dev.albertv.projects.api.entity.Scope.UPDATE_SKILL;
+import java.util.Collection;
+import java.util.stream.Collectors;
+
+import static dev.albertv.projects.api.core.config.security.Permission.CREATE_PROJECT;
+import static dev.albertv.projects.api.core.config.security.Permission.CREATE_SKILL;
+import static dev.albertv.projects.api.core.config.security.Permission.DELETE_PROJECT;
+import static dev.albertv.projects.api.core.config.security.Permission.DELETE_SKILL;
+import static dev.albertv.projects.api.core.config.security.Permission.READ_PROJECT;
+import static dev.albertv.projects.api.core.config.security.Permission.READ_SKILL;
+import static dev.albertv.projects.api.core.config.security.Permission.REVALIDATE_PORTFOLIO;
+import static dev.albertv.projects.api.core.config.security.Permission.UPDATE_PROJECT;
+import static dev.albertv.projects.api.core.config.security.Permission.UPDATE_SKILL;
+import static dev.albertv.projects.api.core.config.security.Role.ANONYMOUS;
 import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.http.HttpMethod.PATCH;
@@ -30,14 +34,6 @@ import static org.springframework.http.HttpMethod.PUT;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    @Bean
-    ResourceServerSynchronizedHttpSecurityPostProcessor resourceServerSynchronizedHttpSecurityPostProcessor() {
-        return http -> http
-            .anonymous(anonymous -> anonymous
-                .authorities(ANONYMOUS.getAuthorities())
-            );
-    }
 
     @Bean
     ResourceServerExpressionInterceptUrlRegistryPostProcessor resourceServerExpressionInterceptUrlRegistryPostProcessor() {
@@ -75,27 +71,32 @@ public class SecurityConfig {
     }
 
     @Bean
-    RoleHierarchy roleHierarchy() {
-        final Role[] roles = Role.values();
+    ResourceServerSynchronizedHttpSecurityPostProcessor resourceServerSynchronizedHttpSecurityPostProcessor() {
+        return http -> http
+            .anonymous(anonymous -> anonymous
+                .authorities(ANONYMOUS.getPermissions())
+            );
+    }
 
-        final RoleHierarchyImpl.Builder builder = RoleHierarchyImpl.withDefaultRolePrefix();
-
-        for (Role r : roles) {
-            final RoleHierarchyImpl.Builder.ImpliedRoles roleBuilder =
-                builder.role(r.name());
-
-            if (r.getImplies() != null) {
-                roleBuilder.implies(
-                    r
-                        .getImplies()
-                        .stream()
-                        .map(Role::name)
-                        .toArray(String[]::new)
-                );
+    @Bean
+    ClaimSetAuthoritiesConverter claimSetAuthoritiesConverter(
+        final OpenidProviderPropertiesResolver openidProviderPropertiesResolver
+    ) {
+        final ClaimSetAuthoritiesConverter roleClaimSetAuthoritiesConverter = new ConfigurableClaimSetAuthoritiesConverter(
+            openidProviderPropertiesResolver
+        );
+        return source -> {
+            final Collection<? extends GrantedAuthority> roleAuthorities = roleClaimSetAuthoritiesConverter.convert(source);
+            if (roleAuthorities == null) {
+                return null;
             }
-        }
 
-        return builder.build();
+            return roleAuthorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .map(Role::valueOf)
+                .flatMap(r -> r.getPermissions().stream())
+                .collect(Collectors.toSet());
+        };
     }
 
 }

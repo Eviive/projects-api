@@ -1,11 +1,11 @@
-package dev.albertv.projects.api.entity;
+package dev.albertv.projects.api.core.config.security;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public enum Scope {
+public enum Permission {
 
     READ_PROJECT("read:project"),
     CREATE_PROJECT("create:project"),
