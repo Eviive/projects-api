@@ -7,8 +7,7 @@ public record CurrentUserDTO(
     String email,
     String name,
     String avatar,
-    Set<String> authorities,
-    Long exp
+    Set<String> authorities
 ) {
 
 }

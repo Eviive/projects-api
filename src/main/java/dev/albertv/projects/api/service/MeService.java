@@ -7,12 +7,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
-import org.springframework.security.oauth2.jwt.JwtClaimNames;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,13 +35,6 @@ public class MeService {
 
             final String name = (String) tokenAttributes.get(StandardClaimNames.NAME);
 
-            final Long exp = switch (tokenAttributes.get(JwtClaimNames.EXP)) {
-                case Long lexp -> lexp;
-                case Instant iexp -> iexp.getEpochSecond();
-                case Date dexp -> dexp.toInstant().getEpochSecond();
-                default -> null;
-            };
-
             final String avatar = "https://gravatar.com/avatar/%s?default=retro"
                 .formatted(hashUtils.sha256Hex(email));
 
@@ -53,8 +43,7 @@ public class MeService {
                 email,
                 name,
                 avatar,
-                authorities,
-                exp
+                authorities
             );
         }
 
@@ -63,8 +52,7 @@ public class MeService {
             null,
             "Guest",
             null,
-            authorities,
-            null
+            authorities
         );
     }
 
