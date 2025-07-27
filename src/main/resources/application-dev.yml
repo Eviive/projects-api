@@ -7,8 +7,8 @@ projects-api:
 
 spring:
   datasource:
-    username: projects-api-user
     url: jdbc:postgresql://localhost:5432/projects-api-db
+    username: projects-api-user
     password: projects-api-password
   jpa:
     show-sql: true

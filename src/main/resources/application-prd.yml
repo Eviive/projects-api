@@ -7,6 +7,13 @@ projects-api:
   portfolio:
     api:
       url: https://albertv.dev/api
+      secret: \${PORTFOLIO_API_SECRET:}
+
+spring:
+  datasource:
+    url: \${SPRING_DATASOURCE_URL:}
+    username: \${SPRING_DATASOURCE_USERNAME:}
+    password: \${SPRING_DATASOURCE_PASSWORD:}
 
 server:
   forward-headers-strategy: native
