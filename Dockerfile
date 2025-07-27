@@ -11,8 +11,6 @@ RUN microdnf install findutils && \
 
 FROM ubuntu:noble
 
-WORKDIR /workspace
+COPY --from=build /workspace/build/native/nativeCompile/ /workspace/
 
-COPY --from=build /workspace/build/api /api
-
-ENTRYPOINT ["/api"]
+ENTRYPOINT ["/workspace/api"]
