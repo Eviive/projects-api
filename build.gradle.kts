@@ -105,6 +105,15 @@ tasks.withType<BootBuildImage> {
     environment.put("BP_NATIVE_IMAGE_BUILD_ARGUMENTS", "-Djava.security.properties=/workspace/BOOT-INF/classes/security.properties --initialize-at-build-time=org.slf4j.helpers.Reporter")
 }
 
+graalvmNative {
+    binaries {
+        named("main") {
+            buildArgs.add("--initialize-at-build-time=org.slf4j.helpers.Reporter")
+            buildArgs.add("-Djava.security.properties=${rootProject.projectDir}/src/main/resources/security.properties")
+        }
+    }
+}
+
 tasks.withType<ProcessAot> {
     args("--spring.profiles.active=prd")
 }
