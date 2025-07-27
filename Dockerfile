@@ -6,7 +6,8 @@ COPY gradlew *.gradle.kts ./
 COPY gradle gradle
 COPY src src
 
-RUN ./gradlew nativeCompile
+RUN microdnf install findutils && \
+    ./gradlew nativeCompile
 
 FROM ubuntu:noble
 
