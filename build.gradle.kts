@@ -111,7 +111,7 @@ graalvmNative {
             buildArgs.add("--initialize-at-build-time=org.slf4j.helpers.Reporter")
             buildArgs.add("-Djava.security.properties=${rootProject.projectDir}/src/main/resources/security.properties")
 
-            resources.autodetect()
+            resources.includedPatterns.add("^.*\\.yml$")
         }
     }
 }
