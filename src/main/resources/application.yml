@@ -12,7 +12,7 @@ projects-api:
 spring:
   application:
     name: personal-api
-    version: ${version}
+    version: \${projects-api.version}
   config:
     import: optional:secrets.yml
   jackson:
