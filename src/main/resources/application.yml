@@ -36,7 +36,7 @@ spring:
 
 logging:
   file:
-    name: logs/projects-api
+    name: logs/projects-api.log
 
 springdoc:
   show-actuator: true
