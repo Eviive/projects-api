@@ -1,6 +1,6 @@
 services:
   database:
-    container_name: projects-api-postgres-dev
+    container_name: postgres-dev
     image: postgres:17.5-alpine
     restart: unless-stopped
     ports:

@@ -37,13 +37,6 @@ spring:
 logging:
   file:
     name: logs/projects-api
-  logback:
-    rollingpolicy:
-      file-name-pattern: \${LOG_FILE}.%d{yyyy-MM-dd}.%i.gz
-      max-history: 30
-      total-size-cap: 100MB
-      clean-history-on-start: false
-      max-file-size: 10MB
 
 springdoc:
   show-actuator: true

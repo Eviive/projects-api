@@ -8,9 +8,9 @@ buildscript {
 }
 
 plugins {
-    java
-    idea
-    checkstyle
+    id("java")
+    id("idea")
+    id("checkstyle")
     id("org.springframework.boot") version "3.5.3"
     id("io.spring.dependency-management") version "1.1.7"
     id("org.flywaydb.flyway") version "11.7.2"
@@ -110,8 +110,6 @@ graalvmNative {
         named("main") {
             buildArgs.add("--initialize-at-build-time=org.slf4j.helpers.Reporter")
             buildArgs.add("-Djava.security.properties=${rootProject.projectDir}/src/main/resources/security.properties")
-
-            resources.includedPatterns.add("^.*\\.yml$")
         }
     }
 }

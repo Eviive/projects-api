@@ -13,4 +13,4 @@ FROM ubuntu:noble
 
 COPY --from=build /workspace/build/native/nativeCompile/ /workspace/
 
-ENTRYPOINT ["/workspace/api"]
+ENTRYPOINT ["/workspace/api", "--spring.profiles.active=prd"]
