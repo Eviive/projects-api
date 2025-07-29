@@ -19,7 +19,8 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ secrets.DOCKER_HUB_REPOSITORY }}
           flavor: |
-            prefix=${{ secrets.DOCKER_TAG_PREFIX }},onlatest=true
+            latest=false
+            prefix=${{ secrets.DOCKER_TAG_PREFIX }}
 
       - name: Setup Buildx
         uses: docker/setup-buildx-action@v3
