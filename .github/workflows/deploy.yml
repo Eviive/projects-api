@@ -41,6 +41,7 @@ jobs:
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v6
         with:
+          context: .
           build-args: |
             version=${{ steps.normalize-ref.outputs.normalized_ref_name }}
           tags: ${{ steps.docker-metadata.outputs.tags }}
