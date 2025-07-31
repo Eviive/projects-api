@@ -13,6 +13,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - id: normalize-ref
+        name: Normalize ref
+        env:
+          ref: ${{ github.ref_name }}
+        run: |
+          echo "normalized_ref_name=$(lower=${ref//\//-} && echo ${lower,,})" >> ${GITHUB_OUTPUT}
+
       - id: docker-metadata
         name: Docker metadata
         uses: docker/metadata-action@v5
@@ -35,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           build-args: |
-            version=${{ github.ref_name }}
+            version=${{ steps.normalize-ref.outputs.normalized_ref_name }}
           tags: ${{ steps.docker-metadata.outputs.tags }}
           labels: ${{ steps.docker-metadata.outputs.labels }}
           push: true
