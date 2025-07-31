@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - v*
+      - '[0-9]+.[0-9]+.[0-9]+'
 
 jobs:
   build:
@@ -34,6 +34,8 @@ jobs:
       - name: Build and Push to Docker Hub
         uses: docker/build-push-action@v6
         with:
+          build-args: |
+            version=${{ github.ref_name }}
           tags: ${{ steps.docker-metadata.outputs.tags }}
           labels: ${{ steps.docker-metadata.outputs.labels }}
           push: true
