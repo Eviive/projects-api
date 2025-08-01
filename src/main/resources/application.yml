@@ -46,10 +46,6 @@ springdoc:
     display-request-duration: true
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: health
   endpoint:
     health:
       probes:
