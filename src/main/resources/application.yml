@@ -1,0 +1,63 @@
+projects-api:
+  production: false
+  version: ${version}
+  azure:
+    storage:
+      blob:
+        projects:
+          container-name: projects
+        skills:
+          container-name: skills
+
+spring:
+  application:
+    name: personal-api
+    version: \${projects-api.version}
+  config:
+    import: optional:secrets.yml
+  jackson:
+    default-property-inclusion: NON_NULL
+  sql:
+    init:
+      mode: never
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+  servlet:
+    multipart:
+      max-file-size: 3MB
+  web:
+    locale: en_US
+    locale-resolver: fixed
+  threads:
+    virtual:
+      enabled: true
+
+logging:
+  file:
+    name: logs/projects-api.log
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    operationsSorter: alpha
+    tagsSorter: alpha
+    display-request-duration: true
+
+management:
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+com:
+  c4-soft:
+    springaddons:
+      oidc:
+        ops:
+          - iss: https://authentik.home.albertv.dev/application/o/projects/
+            username-claim: \$.preferred_username
+            authorities:
+              - path: \$.entitlements
+                caze: upper

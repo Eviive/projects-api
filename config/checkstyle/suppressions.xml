@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE suppressions PUBLIC
+        "-//Checkstyle//DTD SuppressionFilter Configuration 1.2//EN"
+        "https://checkstyle.org/dtds/suppressions_1_2.dtd">
+<suppressions>
+    <suppress checks="HideUtilityClassConstructor" files="ProjectsApiApplication.java"/>
+
+    <suppress checks="LambdaBodyLength" files="SecurityConfig.java"/>
+    <suppress checks="MultipleStringLiterals" files="SecurityConfig.java"/>
+
+    <suppress checks="LineLength" files="ProjectsApiErrorsEnum.java"/>
+
+    <!-- Controllers: https://github.com/checkstyle/checkstyle/issues/10582 -->
+    <!-- Repository: Text blocks query indentation -->
+    <suppress checks="Indentation" files="dev[\\/]albertv[\\/]projects[\\/](controller|repository)[\\/]"/>
+</suppressions>

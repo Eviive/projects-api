@@ -1,0 +1,48 @@
+package dev.albertv.projects.api.mapper;
+
+import dev.albertv.projects.api.core.config.MapStructConfig;
+import dev.albertv.projects.api.dto.ProjectDTO;
+import dev.albertv.projects.api.dto.ProjectLightDTO;
+import dev.albertv.projects.api.entity.Project;
+import dev.albertv.projects.api.mapper.util.CollectionsMapper;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+
+@Mapper(
+    config = MapStructConfig.class,
+    uses = {SkillMapper.class, ImageMapper.class}
+)
+public interface ProjectMapper extends CollectionsMapper<Project, ProjectDTO> {
+
+    // to Entity
+
+    Project toEntity(ProjectDTO projectDTO);
+
+    @AfterMapping
+    default void afterMapping(@MappingTarget Project project) {
+        if (project.getImage() != null) {
+            project.getImage().setProject(project);
+        }
+        if (project.getSkills() != null) {
+            project.getSkills().forEach(skill -> skill.getProjects().add(project));
+        }
+    }
+
+    // to DTO
+
+    ProjectDTO toDTO(Project project);
+
+    // to Light DTO
+
+    ProjectLightDTO toLightDTO(Project project);
+
+    List<ProjectLightDTO> toLightListDTO(Collection<Project> projects);
+
+    Set<ProjectLightDTO> toLightSetDTO(Collection<Project> projects);
+
+}

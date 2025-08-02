@@ -1,23 +1,18 @@
-FROM eclipse-temurin:17-jdk-alpine AS build
+FROM ghcr.io/graalvm/native-image-community:21 AS build
 
-WORKDIR /workspace/app
+WORKDIR /workspace
 
-COPY gradlew *.gradle ./
+COPY gradlew *.gradle.kts ./
 COPY gradle gradle
 COPY src src
 
-RUN ./gradlew bootJar
+ARG version
 
-RUN mkdir -p build/dependency && (cd build/dependency; jar -xf ../libs/*.jar)
+RUN microdnf install findutils && \
+    ./gradlew -Pversion=$version nativeCompile
 
-FROM eclipse-temurin:17-jdk-alpine
+FROM ubuntu:noble
 
-WORKDIR /app
+COPY --from=build /workspace/build/native/nativeCompile/ /workspace/
 
-ARG DEPENDENCY=/workspace/app/build/dependency
-
-COPY --from=build ${DEPENDENCY}/BOOT-INF/lib     ./lib
-COPY --from=build ${DEPENDENCY}/META-INF         ./META-INF
-COPY --from=build ${DEPENDENCY}/BOOT-INF/classes ./
-
-CMD java -Dspring.profiles.active=prod -cp .:lib/* com.eviive.personalapi.PersonalApiApplication
+ENTRYPOINT ["/workspace/api", "--spring.profiles.active=prd"]
