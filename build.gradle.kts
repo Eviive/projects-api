@@ -28,11 +28,10 @@ flyway {
     url = flyway.url
     user = flyway.user
     password = flyway.password
-    cleanDisabled = flyway.cleanDisabled
 }
 
 checkstyle {
-    toolVersion = "10.17.0"
+    toolVersion = "10.26.1"
     configFile = file("config/checkstyle/config.xml")
 }
 

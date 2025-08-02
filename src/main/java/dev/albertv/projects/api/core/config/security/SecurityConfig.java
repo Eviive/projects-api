@@ -36,7 +36,8 @@ import static org.springframework.http.HttpMethod.PUT;
 public class SecurityConfig {
 
     @Bean
-    ResourceServerExpressionInterceptUrlRegistryPostProcessor resourceServerExpressionInterceptUrlRegistryPostProcessor() {
+    ResourceServerExpressionInterceptUrlRegistryPostProcessor
+        resourceServerExpressionInterceptUrlRegistryPostProcessor() {
         return auth -> auth
             .requestMatchers(
                 "/v2/api-docs",
@@ -82,11 +83,12 @@ public class SecurityConfig {
     ClaimSetAuthoritiesConverter claimSetAuthoritiesConverter(
         final OpenidProviderPropertiesResolver openidProviderPropertiesResolver
     ) {
-        final ClaimSetAuthoritiesConverter roleClaimSetAuthoritiesConverter = new ConfigurableClaimSetAuthoritiesConverter(
-            openidProviderPropertiesResolver
-        );
+        final ClaimSetAuthoritiesConverter roleClaimSetAuthoritiesConverter =
+            new ConfigurableClaimSetAuthoritiesConverter(openidProviderPropertiesResolver);
+
         return source -> {
-            final Collection<? extends GrantedAuthority> roleAuthorities = roleClaimSetAuthoritiesConverter.convert(source);
+            final Collection<? extends GrantedAuthority> roleAuthorities =
+                roleClaimSetAuthoritiesConverter.convert(source);
             if (roleAuthorities == null) {
                 return null;
             }

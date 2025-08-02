@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
+      - "[0-9]+.[0-9]+.[0-9]+"
 
 env:
   APP: api
@@ -45,7 +45,7 @@ jobs:
         run: |
           echo "version=${PREFIXED_VERSION#"$PREFIX"}" >> ${GITHUB_OUTPUT}
 
-      - name: Build and Push to Docker Hub
+      - name: Build and push to Docker Hub
         uses: docker/build-push-action@v6
         with:
           context: .
@@ -76,12 +76,12 @@ jobs:
         working-directory: ${{ env.APP }}/overlays/production
         run: kustomize edit set image ${{ env.APP }}=${{ vars.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_REPOSITORY }}:${{ needs.build.outputs.version }}
 
-      - name: Create Pull Request
+      - name: Create pull request
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITOPS_TOKEN }}
-          commit-message: 'ops(${{ env.APP }}): ${{ env.VERSION }}'
+          commit-message: "ops(${{ env.APP }}): ${{ env.VERSION }}"
           branch: release/${{ env.APP }}/${{ env.VERSION }}
-          title: 'Release ${{ env.APP }}: ${{ env.VERSION }}'
-          body: ''
+          title: "Release ${{ env.APP }}: ${{ env.VERSION }}"
+          body: ""
           assignees: ${{ github.actor }}

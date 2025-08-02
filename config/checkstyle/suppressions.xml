@@ -12,5 +12,5 @@
 
     <!-- Controllers: https://github.com/checkstyle/checkstyle/issues/10582 -->
     <!-- Repository: Text blocks query indentation -->
-    <suppress checks="Indentation" files="dev[\\/]albertv[\\/]projects[\\/](controller|repository)[\\/]"/>
+    <suppress checks="Indentation" files="dev[\\/]albertv[\\/]projects[\\/]api[\\/](controller|repository)[\\/]"/>
 </suppressions>
