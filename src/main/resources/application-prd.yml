@@ -3,7 +3,8 @@ projects-api:
   production: true
   azure:
     storage:
-      connection-string: \${AZURE_STORAGE_CONNECTION_STRING:}
+      blob:
+        endpoint: \${AZURE_BLOB_STORAGE_ENDPOINT:}
   portfolio:
     api:
       url: https://albertv.dev/api
