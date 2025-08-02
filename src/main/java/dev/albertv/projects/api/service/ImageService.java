@@ -5,7 +5,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import dev.albertv.projects.api.core.exception.ProjectsApiException;
-import dev.albertv.projects.api.core.properties.AzureStorageProperties;
+import dev.albertv.projects.api.core.properties.AzureStorageBlobProperties;
 import dev.albertv.projects.api.entity.Image;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class ImageService {
 
     private final BlobServiceClient blobServiceClient;
 
-    private final AzureStorageProperties azureStorageProperties;
+    private final AzureStorageBlobProperties azureStorageBlobProperties;
 
     @Transactional(propagation = MANDATORY)
     public void upload(final Image image, final UUID oldUuid, final MultipartFile file) {
@@ -70,9 +70,9 @@ public class ImageService {
         final String containerName;
 
         if (image.getProject() != null) {
-            containerName = azureStorageProperties.blob().projects().containerName();
+            containerName = azureStorageBlobProperties.projects().containerName();
         } else if (image.getSkill() != null) {
-            containerName = azureStorageProperties.blob().skills().containerName();
+            containerName = azureStorageBlobProperties.skills().containerName();
         } else {
             throw ProjectsApiException.format(API500_UNKNOWN_CONTAINER, image.getUuid().toString());
         }
