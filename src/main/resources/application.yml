@@ -11,7 +11,7 @@ projects-api:
 
 spring:
   application:
-    name: personal-api
+    name: projects-api
     version: \${projects-api.version}
   config:
     import: optional:secrets.yml
