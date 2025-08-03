@@ -12,4 +12,5 @@ jobs:
         uses: eviive/actions/validate/lint/checkstyle@main
         with:
           version: 10.26.1
-          config: config/checkstyle/config.xml
+          properties: |
+            config_loc=config/checkstyle

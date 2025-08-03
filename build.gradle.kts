@@ -32,7 +32,6 @@ flyway {
 
 checkstyle {
     toolVersion = "10.26.1"
-    configFile = file("config/checkstyle/config.xml")
 }
 
 configurations {
