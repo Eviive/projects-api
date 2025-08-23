@@ -7,6 +7,7 @@ build
 logs
 .git
 .gitignore
+.gitattributes
 .github
 .idea
 .jpb
