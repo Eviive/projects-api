@@ -4,13 +4,9 @@ on:
   pull_request:
 
 jobs:
-  checkstyle:
-    name: CheckStyle
-    runs-on: ubuntu-latest
-    steps:
-      - name: CheckStyle
-        uses: eviive/actions/validate/lint/checkstyle@main
-        with:
-          version: 10.26.1
-          properties: |
-            config_loc=config/checkstyle
+  validate:
+    name: Validate
+    uses: eviive/actions/.github/workflows/validate-java.yaml@chore/reusable-workflows
+    with:
+      java-version: 21
+      checkstyle-version: 10.26.1
