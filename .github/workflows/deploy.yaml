@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  deploy:
+    name: Deploy
+    uses: eviive/actions/.github/workflows/deploy-kustomize-gitops.yaml@main
+    with:
+      docker-hub-repository: ${{ vars.DOCKER_HUB_REPOSITORY }}
+      docker-hub-username: ${{ vars.DOCKER_HUB_USERNAME }}
+      docker-tag-prefix: ${{ vars.DOCKER_TAG_PREFIX }}
+      docker-build-args-version: true
+      gitops-repository: ${{ vars.GITOPS_REPOSITORY }}
+      kustomize-working-directory: api/overlays/production
+      kustomize-image: api
+    secrets:
+      docker-hub-token: ${{ secrets.DOCKER_HUB_TOKEN }}
+      gitops-token: ${{ secrets.GITOPS_TOKEN }}
