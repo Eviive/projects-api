@@ -26,33 +26,18 @@ jobs:
           docker-tag-prefix: ${{ vars.DOCKER_TAG_PREFIX }}
           docker-build-args-version: true
 
-  gitops-pr:
-    name: GitOps PR
+  gitops-kustomize-pr:
+    name: GitOps Kustomize PR
     needs: build-docker
     if: success() && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
-    env:
-      VERSION: ${{ needs.build-docker.outputs.version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: GitOps Kustomize PR
+        uses: eviive/actions/gitops/kustomize/pull-request@main
         with:
           repository: ${{ vars.GITOPS_REPOSITORY }}
           token: ${{ secrets.GITOPS_TOKEN }}
-
-      - name: Setup Kustomize
-        uses: eviive/actions/install/kustomize@main
-
-      - name: Update image
-        working-directory: ${{ env.APP }}/overlays/production
-        run: kustomize edit set image ${{ env.APP }}=${{ vars.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_REPOSITORY }}:${{ env.VERSION }}
-
-      - name: Create PR
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.GITOPS_TOKEN }}
-          commit-message: "ops(${{ env.APP }}): ${{ env.VERSION }}"
-          branch: release/${{ env.APP }}/${{ env.VERSION }}
-          title: "Release ${{ env.APP }}: ${{ env.VERSION }}"
-          body: ""
-          assignees: ${{ github.actor }}
+          kustomize-working-directory: ${{ env.APP }}/overlays/production
+          kustomize-image: ${{ env.APP }}
+          docker-image: ${{ vars.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_REPOSITORY }}
+          docker-tag: ${{ needs.build-docker.outputs.version }}
