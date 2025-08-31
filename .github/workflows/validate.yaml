@@ -6,7 +6,7 @@ on:
 jobs:
   validate:
     name: Validate
-    uses: eviive/actions/.github/workflows/validate-java.yaml@chore/reusable-workflows
+    uses: eviive/actions/.github/workflows/validate-java.yaml@main
     with:
       java-version: 21
       checkstyle-version: 10.26.1

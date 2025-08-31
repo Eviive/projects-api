@@ -9,7 +9,7 @@ on:
 jobs:
   deploy:
     name: Deploy
-    uses: eviive/actions/.github/workflows/deploy-kustomize-gitops.yaml@chore/reusable-workflows
+    uses: eviive/actions/.github/workflows/deploy-kustomize-gitops.yaml@main
     with:
       docker-hub-repository: ${{ vars.DOCKER_HUB_REPOSITORY }}
       docker-hub-username: ${{ vars.DOCKER_HUB_USERNAME }}
