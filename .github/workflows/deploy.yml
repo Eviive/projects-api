@@ -10,58 +10,29 @@ env:
   APP: api
 
 jobs:
-  build:
-    name: Build
+  build-docker:
+    name: Build Docker
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.docker-metadata.outputs.version }}
+      version: ${{ steps.build-docker.outputs.version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - id: docker-metadata
-        name: Docker metadata
-        uses: docker/metadata-action@v5
+      - id: build-docker
+        name: Build Docker
+        uses: eviive/actions/build/docker@main
         with:
-          images: ${{ vars.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_REPOSITORY }}
-          flavor: |
-            latest=false
-            prefix=${{ vars.DOCKER_TAG_PREFIX }}
+          docker-hub-repository: ${{ vars.DOCKER_HUB_REPOSITORY }}
+          docker-hub-token: ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker-hub-username: ${{ vars.DOCKER_HUB_USERNAME }}
+          docker-tag-prefix: ${{ vars.DOCKER_TAG_PREFIX }}
+          docker-build-args-version: true
 
-      - name: Setup Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ vars.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - id: build-version
-        name: Build version
-        env:
-          PREFIXED_VERSION: ${{ steps.docker-metadata.outputs.version }}
-          PREFIX: ${{ vars.DOCKER_TAG_PREFIX }}
-        run: |
-          echo "version=${PREFIXED_VERSION#"$PREFIX"}" >> ${GITHUB_OUTPUT}
-
-      - name: Build and push to Docker Hub
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          build-args: |
-            version=${{ steps.build-version.outputs.version }}
-          tags: ${{ steps.docker-metadata.outputs.tags }}
-          labels: ${{ steps.docker-metadata.outputs.labels }}
-          push: true
-
-  gitops:
-    name: GitOps
-    needs: build
+  gitops-pr:
+    name: GitOps PR
+    needs: build-docker
     if: success() && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     env:
-      VERSION: ${{ needs.build.outputs.version }}
+      VERSION: ${{ needs.build-docker.outputs.version }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -70,13 +41,13 @@ jobs:
           token: ${{ secrets.GITOPS_TOKEN }}
 
       - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v2
+        uses: eviive/actions/install/kustomize@main
 
       - name: Update image
         working-directory: ${{ env.APP }}/overlays/production
-        run: kustomize edit set image ${{ env.APP }}=${{ vars.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_REPOSITORY }}:${{ needs.build.outputs.version }}
+        run: kustomize edit set image ${{ env.APP }}=${{ vars.DOCKER_HUB_USERNAME }}/${{ vars.DOCKER_HUB_REPOSITORY }}:${{ env.VERSION }}
 
-      - name: Create pull request
+      - name: Create PR
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GITOPS_TOKEN }}
