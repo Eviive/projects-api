@@ -1,0 +1,12 @@
+name: Validate
+
+on:
+  pull_request:
+
+jobs:
+  validate:
+    name: Validate
+    uses: eviive/actions/.github/workflows/validate-java.yaml@main
+    with:
+      java-version: 21
+      checkstyle-version: 10.26.1
